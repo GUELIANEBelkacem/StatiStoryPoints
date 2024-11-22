@@ -139,55 +139,66 @@ var getBadges = function (t) {
 
 var boardButtonCallback = function (t) {
   return t.popup({
-    title: 'Popup List Example',
+    title: 'Popup List',
     items: [
+      // {
+      //   text: 'Hello fuckers',
+      //   callback: function (t) {
+      //     return t.modal({
+      //       url: './modal.html', // The URL to load for the iframe
+      //       args: { text: 'Hello' }, // Optional args to access later with t.arg('text') on './modal.html'
+      //       accentColor: '#F2D600', // Optional color for the modal header 
+      //       height: 500, // Initial height for iframe; not used if fullscreen is true
+      //       fullscreen: true, // Whether the modal should stretch to take up the whole screen
+      //       callback: () => console.log('Goodbye.'), // optional function called if user closes modal (via `X` or escape)
+      //       title: 'Hello, Modal!', // Optional title for modal header
+      //       // You can add up to 3 action buttons on the modal header - max 1 on the right side.
+      //       actions: [{
+      //         icon: GRAY_ICON,
+      //         url: 'https://google.com', // Opens the URL passed to it.
+      //         alt: 'Leftmost',
+      //         position: 'left',
+      //       }
+      //       , {
+      //         icon: GRAY_ICON,
+      //         callback: (tr) => tr.popup({ // Callback to be called when user clicks the action button.
+      //           title: 'Settings',
+      //           url: 'settings.html',
+      //           height: 164,
+      //         }),
+      //         alt: 'Second from left',
+      //         position: 'left',
+      //       }, {
+      //         icon: GRAY_ICON,
+      //         callback: () => console.log('🏎'),
+      //         alt: 'Right side',
+      //         position: 'right',
+      //       }],
+      //     })
+      //   }
+      // },
+      // {
+      //   text: 'Hello fuckers',
+      //   callback: function (t) {
+      //     return t.boardBar({
+      //       url: './board-bar.html',
+      //       height: 200
+      //     })
+      //       .then(function () {
+      //         return t.closePopup();
+      //       });
+      //   }
+      // }
       {
-        text: 'Open Modal',
+        text: 'Hello fuckers',
         callback: function (t) {
-          return t.modal({
-            url: './modal.html', // The URL to load for the iframe
-            args: { text: 'Hello' }, // Optional args to access later with t.arg('text') on './modal.html'
-            accentColor: '#F2D600', // Optional color for the modal header 
-            height: 500, // Initial height for iframe; not used if fullscreen is true
-            fullscreen: true, // Whether the modal should stretch to take up the whole screen
-            callback: () => console.log('Goodbye.'), // optional function called if user closes modal (via `X` or escape)
-            title: 'Hello, Modal!', // Optional title for modal header
-            // You can add up to 3 action buttons on the modal header - max 1 on the right side.
-            actions: [{
-              icon: GRAY_ICON,
-              url: 'https://google.com', // Opens the URL passed to it.
-              alt: 'Leftmost',
-              position: 'left',
-            }, {
-              icon: GRAY_ICON,
-              callback: (tr) => tr.popup({ // Callback to be called when user clicks the action button.
-                title: 'Settings',
-                url: 'settings.html',
-                height: 164,
-              }),
-              alt: 'Second from left',
-              position: 'left',
-            }, {
-              icon: GRAY_ICON,
-              callback: () => console.log('🏎'),
-              alt: 'Right side',
-              position: 'right',
-            }],
-          })
-        }
-      },
-      {
-        text: 'Open Board Bar',
-        callback: function (t) {
-          return t.boardBar({
-            url: './board-bar.html',
-            height: 200
-          })
-            .then(function () {
-              return t.closePopup();
-            });
+          return t.alert({
+            message: 'Hello fuckers! Go team mobile',
+            duration: 6,
+          });
         }
       }
+
     ]
   });
 };
@@ -199,7 +210,7 @@ var cardButtonCallback = function (t) {
     var urlForCode = 'http://www.nps.gov/' + parkCode + '/';
     var nameForCode = '🏞 ' + parkCode.toUpperCase();
     return {
-      text: nameForCode,
+      text: 'Yo yo yo',
       url: urlForCode,
       callback: function (t) {
         // In this case we want to attach that park to the card as an attachment
@@ -256,61 +267,61 @@ TrelloPowerUp.initialize({
   // If you need to make an asynchronous request or action before you can reply to Trello
   // you can return a Promise (bluebird promises are included at TrelloPowerUp.Promise)
   // The Promise should resolve to the object type that is expected to be returned
-  'attachment-sections': function (t, options) {
-    // options.entries is a list of the attachments for this card
-    // you can look through them and 'claim' any that you want to
-    // include in your section.
+  // 'attachment-sections': function (t, options) {
+  //   // options.entries is a list of the attachments for this card
+  //   // you can look through them and 'claim' any that you want to
+  //   // include in your section.
 
-    // we will just claim urls for Yellowstone
-    var claimed = options.entries.filter(function (attachment) {
-      return attachment.url.indexOf('http://www.nps.gov/yell/') === 0;
-    });
+  //   // we will just claim urls for Yellowstone
+  //   var claimed = options.entries.filter(function (attachment) {
+  //     return attachment.url.indexOf('http://www.nps.gov/yell/') === 0;
+  //   });
 
-    // you can have more than one attachment section on a card
-    // you can group items together into one section, have a section
-    // per attachment, or anything in between.
-    if (claimed && claimed.length > 0) {
-      // if the title for your section requires a network call or other
-      // potentially length operation you can provide a function for the title
-      // that returns the section title. If you do so, provide a unique id for
-      // your section
-      return [{
-        id: 'Yellowstone', // optional if you aren't using a function for the title
-        claimed: claimed,
-        icon: GLITCH_ICON,
-        title: 'Example Attachment Section: Yellowstone',
-        content: {
-          type: 'iframe',
-          url: t.signUrl('./section.html', { arg: 'you can pass your section args here' }),
-          height: 230
-        }
-      }];
-    } else {
-      return [];
-    }
-  },
-  'attachment-thumbnail': function (t, options) {
-    // options.url has the url of the attachment for us
-    // return an object (or a Promise that resolves to it) with some or all of these properties:
-    // url, title, image, modified (Date), created (Date), createdBy, modifiedBy
+  //   // you can have more than one attachment section on a card
+  //   // you can group items together into one section, have a section
+  //   // per attachment, or anything in between.
+  //   if (claimed && claimed.length > 0) {
+  //     // if the title for your section requires a network call or other
+  //     // potentially length operation you can provide a function for the title
+  //     // that returns the section title. If you do so, provide a unique id for
+  //     // your section
+  //     return [{
+  //       id: 'Yellowstone', // optional if you aren't using a function for the title
+  //       claimed: claimed,
+  //       icon: GLITCH_ICON,
+  //       title: 'Example Attachment Section: Yellowstone',
+  //       content: {
+  //         type: 'iframe',
+  //         url: t.signUrl('./section.html', { arg: 'you can pass your section args here' }),
+  //         height: 230
+  //       }
+  //     }];
+  //   } else {
+  //     return [];
+  //   }
+  // },
+  // 'attachment-thumbnail': function (t, options) {
+  //   // options.url has the url of the attachment for us
+  //   // return an object (or a Promise that resolves to it) with some or all of these properties:
+  //   // url, title, image, modified (Date), created (Date), createdBy, modifiedBy
 
-    // You should use this if you have useful information about an attached URL but it
-    // doesn't warrant pulling it out into a section via the attachment-sections capability
-    // for example if you just want to show a preview image and give it a better name
-    // then attachment-thumbnail is the best option
-    return {
-      url: options.url,
-      title: '👉 ' + options.url + ' 👈',
-      image: {
-        url: GLITCH_ICON,
-        logo: true // false if you are using a thumbnail of the content
-      },
-    };
+  //   // You should use this if you have useful information about an attached URL but it
+  //   // doesn't warrant pulling it out into a section via the attachment-sections capability
+  //   // for example if you just want to show a preview image and give it a better name
+  //   // then attachment-thumbnail is the best option
+  //   return {
+  //     url: options.url,
+  //     title: '👉 ' + options.url + ' 👈',
+  //     image: {
+  //       url: GLITCH_ICON,
+  //       logo: true // false if you are using a thumbnail of the content
+  //     },
+  //   };
 
-    // if we don't actually have any valuable information about the url
-    // we can let Trello know like so:
-    // throw t.NotHandled();
-  },
+  //   // if we don't actually have any valuable information about the url
+  //   // we can let Trello know like so:
+  //   // throw t.NotHandled();
+  // },
   'board-buttons': function (t, options) {
     return [{
       // we can either provide a button that has a callback function
@@ -337,13 +348,15 @@ TrelloPowerUp.initialize({
       icon: GRAY_ICON, // don't use a colored icon here
       text: 'Open Popup',
       callback: cardButtonCallback
-    }, {
-      // but of course, you could also just kick off to a url if that's your thing
-      icon: GRAY_ICON,
-      text: 'Just a URL',
-      url: 'https://developers.trello.com',
-      target: 'Trello Developer Site' // optional target for above url
-    }];
+    }
+      // , {
+      //   // but of course, you could also just kick off to a url if that's your thing
+      //   icon: GRAY_ICON,
+      //   text: 'Just a URL',
+      //   url: 'https://developers.trello.com',
+      //   target: 'Trello Developer Site' // optional target for above url
+      // }
+    ];
   },
   'card-detail-badges': function (t, options) {
     return getBadges(t);
