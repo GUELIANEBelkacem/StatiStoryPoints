@@ -1,38 +1,16 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <meta charset="utf-8">
-</head>
+  </head>
+  <body>
+    <h1>Hey there! 👋</h1>
 
-<body>
+    <p>This is the HTML connector for the Power-Up. It will be loaded into a hidden iframe when your Power-Up is enabled.</p>
+    <p>If you're looking for the manifest file, you should head over <a href="./manifest.json">here</a>.</p>
+    <p>Not sure what is going on? Head on over to the <a href="https://github.com/trello/power-up-template/blob/gh-pages/README.md">README</a>.</p>
+
     <script src="https://p.trellocdn.com/power-up.min.js"></script>
-    <script>
-        TrelloPowerUp.initialize({
-            'card-buttons': function (t, options) {
-                return [
-                    {
-                        icon: "https://i.ibb.co/6sbknH0/logo-stroke-32pt-style-2-no-stroke.png",
-                        text: "Hello World!",
-                        callback: function (t) {
-                            return t.card('id', 'name').then(card => alert(`Sup fuckers ${card.name} (id: ${card.id})!`))
-                        }
-                    }
-                ]
-            },
-            'board-buttons': function (t, options) {
-                return [
-                    {
-                        icon: "https://i.ibb.co/6sbknH0/logo-stroke-32pt-style-2-no-stroke.png",
-                        text: "Hello World!",
-                        callback: function (t) {
-                            return t.board().then(board => alert(`Sup fuckers!`))
-                        }
-                    }
-                ]
-            }
-        })
-    </script>
-</body>
-
+    <script src="./js/client.js"></script>
+  </body>
 </html>
