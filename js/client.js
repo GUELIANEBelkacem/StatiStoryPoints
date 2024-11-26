@@ -109,7 +109,7 @@ var updateLists = function (t) {
       console.log(list)
 
       var spcount = 0;
-      list.get('cards')
+      list.cards('all')
         .then(function (card) {
 
           console.log("card")
