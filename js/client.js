@@ -122,18 +122,19 @@ var updateLists = function (t) {
           console.log("card")
           console.log(card)
           card.get('id')
-            .then(function (id) {
-              console.log("id")
-              console.log(id)
-              var x = t.get('card', 'shared', `stati_story_point_value_${id}`)
-              console.log("x")
-              console.log(x)
-              spcount += x
-            })
+          var cardID = card.id
+          console.log("id")
+          console.log(cardID)
+          var x = t.get('card', 'shared', `stati_story_point_value_${cardID}`)
+          console.log("x")
+          console.log(x)
+          spcount += x
+
         });
 
 
-
+      console.log("spcount")
+      console.log(spcount)
 
       const columnName = list.name.replace(/ \(Total SP: \d+\)/, '')
 
