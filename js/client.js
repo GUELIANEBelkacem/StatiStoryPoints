@@ -127,7 +127,7 @@ var updateLists = function (t) {
               console.log(val)
 
               valInt = parseInt(val)
-              if (valInt) spcount += valInt
+              if (valInt > 0) spcount += valInt
 
               if (spcount > 0) {
                 console.log("spcount")
