@@ -131,9 +131,17 @@ var getTotalListSPCountBadge = async function (t) {
 
   const listName = list.name
 
-  $("#board .list").each(function (_, l) {
-    $(".list-header-name", l).append(" (" + spcount + ")");
-  });
+  // $("#board .list").each(function (_, l) {
+  //   $(".list-header-name", l).append(" (" + spcount + ")");
+  // });
+  var xxx = document.getElementsByClassName('KLvU2mDGTQrsWG')
+
+  console.log(xxx)
+
+  console.log('listName')
+  console.log(listName)
+  console.log('list id')
+  console.log(list.id)
 
   return {
     title: 'Totale Story Points',
