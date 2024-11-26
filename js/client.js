@@ -132,7 +132,7 @@ var updateLists = function (t) {
           var x = t.get('card', 'shared', `stati_story_point_value_${cardID}`)
           console.log("x")
           console.log(x)
-          spcount += x
+          spcount += parseInt(x)
 
         });
 
