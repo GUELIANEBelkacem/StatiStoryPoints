@@ -367,35 +367,48 @@ TrelloPowerUp.initialize({
     // you can look through them and 'claim' any that you want to
     // include in your section.
 
-    console.log('attachment-sections');
-    console.log(options);
-    // we will just claim urls for Yellowstone
+    // console.log('attachment-sections');
+    // console.log(options);
+    // // we will just claim urls for Yellowstone
     var claimed = options.entries.filter(function (attachment) {
-      return true;
+      return attachment.url.indexOf('https://fakeimg.pl/') === 0;
     });
 
-    // you can have more than one attachment section on a card
-    // you can group items together into one section, have a section
-    // per attachment, or anything in between.
-    if (claimed && claimed.length > 0) {
-      // if the title for your section requires a network call or other
-      // potentially length operation you can provide a function for the title
-      // that returns the section title. If you do so, provide a unique id for
-      // your section
-      return [{
+    // // you can have more than one attachment section on a card
+    // // you can group items together into one section, have a section
+    // // per attachment, or anything in between.
+    // if (claimed && claimed.length > 0) {
+    //   // if the title for your section requires a network call or other
+    //   // potentially length operation you can provide a function for the title
+    //   // that returns the section title. If you do so, provide a unique id for
+    //   // your section
+    //   return [{
+    //     id: 'testtest', // optional if you aren't using a function for the title
+    //     claimed: claimed,
+    //     icon: ICON,
+    //     title: 'StatiStoryPoints Section',
+    //     content: {
+    //       type: 'iframe',
+    //       url: t.signUrl('./section.html', { arg: 'you can pass your section args here' }),
+    //       height: 230
+    //     }
+    //   }];
+    // } else {
+    //   return [];
+    // }
+    return [
+      {
         id: 'testtest', // optional if you aren't using a function for the title
-        claimed: claimed,
+        claimed: options.entries,
         icon: ICON,
         title: 'StatiStoryPoints Section',
         content: {
-          type: 'iframe',
+          type: 'image',
           url: t.signUrl('./section.html', { arg: 'you can pass your section args here' }),
           height: 230
         }
-      }];
-    } else {
-      return [];
-    }
+      }
+    ];
   },
   // 'attachment-thumbnail': function (t, options) {
   //   // options.url has the url of the attachment for us
