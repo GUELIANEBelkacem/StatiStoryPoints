@@ -218,6 +218,11 @@ var cardButtonCallback = function (t, opts) {
         console.log(t.card());
         console.log('t.card(name)');
         console.log(t.card('name'))
+        console.log('t.card(id, name)');
+        console.log(t.card('id', 'name'))
+        console.log('t.card(all)');
+        console.log(t.card('all'));
+
         t.card('name')
           .get('name')
           .then(function (cardName) {
