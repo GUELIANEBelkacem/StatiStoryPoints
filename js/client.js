@@ -112,14 +112,16 @@ var updateLists = function (t) {
       var tableID = list.id
       t.cards('all')
         .filter((card) => {
-          console.log("card")
-          console.log(card)
+
           var idList = card.idList
           return idList === tableID
         })
         .then(function (card) {
 
-          console.log("reached the last then")
+          console.log("card")
+          console.log(card)
+
+
           var cardID = card.id
           console.log("id")
           console.log(cardID)
