@@ -108,22 +108,37 @@ var updateLists = function (t) {
       console.log("list")
       console.log(list)
 
-      const cards = list.cards
-      console.log("cards")
-      console.log(cards)
+      var spcount = 0;
+      list.get('cards')
+        .then(function (card) {
 
-      const storyPoints = cards.map(card => Number(getSPFromCard(card)))
+          console.log("card")
+          console.log(card)
+          card.get('id')
+            .then(function (id) {
+              console.log("id")
+              console.log(id)
+              var x = t.get('card', 'shared', `stati_story_point_value_${id}`)
+              console.log("x")
+              console.log(x)
+              spcount += x
+            })
+        });
 
-      const total = storyPoints.reduce((a, b) => a + b, 0)
+
+
+
       const columnName = list.name.replace(/ \(Total SP: \d+\)/, '')
 
       console.log("Updating list");
 
-      setColumnName(list.id, `${columnName} (Total SP: ${total})`)
+      setColumnName(list.id, `${columnName} (Total SP: ${spcount})`)
 
 
     });
 }
+
+
 var getBadges = function (t) {
   console.log('----------------------------------------- loading detailed badges -----------------------------------------');
   return t.card('id')
