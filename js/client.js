@@ -129,6 +129,10 @@ var getTotalListSPCountBadge = async function (t) {
   var list = await t.list('all');
   var spcount = await getTotalListSPCount(t, list)
 
+  const listName = list.name
+  t.put(`/lists/${list.id}`, {
+    name: `${listName} (${spcount})`
+  })
 
   return {
     title: 'Totale Story Points',
