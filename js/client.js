@@ -116,6 +116,8 @@ var updateLists = function (t) {
           var idList = card.idList
           console.log("idList")
           console.log(idList)
+          console.log("tableID")
+          console.log(tableID)
           return idList === tableID
         })
         .then(function (card) {
