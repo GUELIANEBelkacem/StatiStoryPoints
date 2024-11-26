@@ -130,9 +130,10 @@ var getTotalListSPCountBadge = async function (t) {
   var spcount = await getTotalListSPCount(t, list)
 
   const listName = list.name
-  t.put(`/lists/${list.id}`, {
-    name: `${listName} (${spcount})`
-  })
+
+  $("#board .list").each(function (_, l) {
+    $(".list-header-name", l).append(" (" + spcount + ")");
+  });
 
   return {
     title: 'Totale Story Points',
