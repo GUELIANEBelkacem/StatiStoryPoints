@@ -232,7 +232,7 @@ var cardButtonCallback = function (t, opts) {
 
         t.card('id')
           .get('id')
-          .then(function (id) { set('card', 'shared', `stati_story_point_value_${id}`, fibItem) })
+          .then(function (id) { t.set('card', 'shared', `stati_story_point_value_${id}`, fibItem) })
           .then(function () {
             console.log('value set');
             return t.closePopup();
