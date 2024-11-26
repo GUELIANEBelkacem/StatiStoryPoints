@@ -438,12 +438,7 @@ TrelloPowerUp.initialize({
     }];
   },
   'card-detail-badges': function (t, options) {
-    return new Promise((resolve) => {
-      getBadges(t).then((badges) => {
-        return resolve(badges);
-      });
-
-    });
+    return getBadges(t)
   },
   'card-from-url': function (t, options) {
     // options.url has the url in question
