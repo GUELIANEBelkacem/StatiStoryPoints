@@ -105,15 +105,13 @@ var updateLists = async function (t) {
 
   var lists = await t.lists('all');
 
-  lists.forEach(list => {
-
+  for (const list of lists) {
     var tableID = list.id
     var cards = list.cards;
     console.log("table id")
     console.log(tableID)
 
-    cards.forEach(async function (card) {
-
+    for (const card of cards) {
       var cardID = card.id
 
       var val = await t.get('board', 'shared', `stati_story_point_value_${cardID}`)
@@ -122,14 +120,11 @@ var updateLists = async function (t) {
 
       valInt = parseInt(val)
       if (valInt > 0) spcount += valInt
-
-    });
-
+    }
 
     console.log(`spcount for ${list.name} is ${spcount}`)
+  }
 
-
-  })
 
 }
 
