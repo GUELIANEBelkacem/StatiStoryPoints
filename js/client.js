@@ -119,9 +119,7 @@ var updateLists = function (t) {
         })
         .then(function (card) {
 
-          console.log("card")
-          console.log(card)
-          card.get('id')
+          console.log("reached the last then")
           var cardID = card.id
           console.log("id")
           console.log(cardID)
