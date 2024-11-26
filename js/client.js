@@ -109,12 +109,16 @@ var updateLists = async function (t) {
 
     var tableID = list.id
     var cards = list.cards;
+    console.log("table id")
+    console.log(tableID)
 
     cards.forEach(async function (card) {
 
       var cardID = card.id
 
       var val = await t.get('board', 'shared', `stati_story_point_value_${cardID}`)
+
+      console.log(`val for ${card.name} is ${val}`)
 
       valInt = parseInt(val)
       if (valInt > 0) spcount += valInt
@@ -123,7 +127,6 @@ var updateLists = async function (t) {
 
 
     console.log(`spcount for ${list.name} is ${spcount}`)
-    console.log(spcount)
 
 
   })
@@ -137,10 +140,7 @@ var getBadges = function (t) {
     .get('id')
     .then(function (id) {
       updateLists(t)
-      var x = t.get('board', 'shared', `stati_story_point_value_${id}`)
-      console.log('stuff')
-      console.log(x)
-      return x
+      return t.get('board', 'shared', `stati_story_point_value_${id}`)
     })
     .then(function (val) {
       console.log('loading detailed badges');
