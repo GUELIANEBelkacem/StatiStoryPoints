@@ -374,8 +374,8 @@ TrelloPowerUp.initialize({
       icon: ICON,
       title: 'StatiStoryPoint Total',
       content: {
-        type: 'iframe',
-        url: t.signUrl('./section.html', { arg: 'you can pass your section args here' }),
+        type: 'image',
+        url: 'https://fakeimg.pl/600x400/a65858/543939?text=Hello',
         height: 230
       }
     }];
