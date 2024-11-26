@@ -404,7 +404,7 @@ TrelloPowerUp.initialize({
         title: 'StatiStoryPoints Section',
         content: {
           type: 'image',
-          url: t.signUrl('./section.html', { arg: 'you can pass your section args here' }),
+          url: 'https://fakeimg.pl/600x400/a65858/543939?text=Hello',
           height: 230
         }
       }
