@@ -214,6 +214,10 @@ var cardButtonCallback = function (t, opts) {
         console.log('object opts');
         console.log(opts);
 
+        console.log('t.card()');
+        console.log(t.card());
+        console.log('t.card(name)');
+        console.log(t.card('name'))
         t.card('name')
           .get('name')
           .then(function (cardName) {
