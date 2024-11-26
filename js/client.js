@@ -128,6 +128,12 @@ var updateLists = function (t) {
 
               valInt = parseInt(val)
               if (valInt) spcount += valInt
+
+              if (spcount > 0) {
+                console.log("spcount")
+                console.log(spcount)
+              }
+
             })
 
 
@@ -139,8 +145,7 @@ var updateLists = function (t) {
         //setColumnName(t, list.id, `${columnName} (Total SP: ${spcount})`)
       })
 
-      console.log("spcount")
-      console.log(spcount)
+
 
       //const columnName = list.name.replace(/ \(Total SP: \d+\)/, '')
 
