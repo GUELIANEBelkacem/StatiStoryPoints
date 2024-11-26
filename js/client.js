@@ -110,6 +110,10 @@ var updateLists = function (t) {
 
       var spcount = 0;
       var tableID = list.id
+
+      console.log("upper tableID")
+      console.log(tableID)
+
       t.cards('all')
         .filter((card) => {
 
