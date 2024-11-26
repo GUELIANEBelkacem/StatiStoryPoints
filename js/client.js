@@ -101,22 +101,19 @@ function setColumnName(t, id, name) {
 //   return ['green', 'yellow', 'red', 'none'][Math.floor(Math.random() * 4)];
 // };
 var updateLists = async function (t) {
-  var spcount = 0;
+
 
   var lists = await t.lists('all');
 
   for (const list of lists) {
+    var spcount = 0;
+
     var tableID = list.id
     var cards = list.cards;
-    console.log("table id")
-    console.log(tableID)
 
     for (const card of cards) {
       var cardID = card.id
-
       var val = await t.get('board', 'shared', `stati_story_point_value_${cardID}`)
-
-      console.log(`val for ${card.name} is ${val}`)
 
       valInt = parseInt(val)
       if (valInt > 0) spcount += valInt
