@@ -209,8 +209,17 @@ var cardButtonCallback = function (t, opts) {
       text: fibItem,
       callback: function (t) {
 
+        console.log('object t');
         console.log(t);
+        console.log('object opts');
         console.log(opts);
+
+        t.card('name')
+          .get('name')
+          .then(function (cardName) {
+            console.log('Heres the card name: ' + cardName);
+          });
+
         return t.set('card', 'private', 'storyPoints', fibItem)
           .then(function () {
             return t.closePopup();
