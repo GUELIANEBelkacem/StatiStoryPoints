@@ -152,7 +152,10 @@ var getBadges = function (t) {
     .get('id')
     .then(function (id) {
       updateLists(t)
-      return t.get('board', 'shared', `stati_story_point_value_${id}`)
+      var x = t.get('board', 'shared', `stati_story_point_value_${id}`)
+      console.log('stuff')
+      console.log(x)
+      return x
     })
     .then(function (val) {
       console.log('loading detailed badges');
