@@ -421,7 +421,7 @@ TrelloPowerUp.initialize({
     }];
   },
   'card-badges': function (t, options) {
-    return Promise(getBadges(t));
+    return new Promise(function (resolve) { resolve(getBadges(t)) });
   },
   'card-buttons': function (t, options) {
     return [{
@@ -433,7 +433,7 @@ TrelloPowerUp.initialize({
     }];
   },
   'card-detail-badges': function (t, options) {
-    return Promise(getBadges(t));
+    return new Promise(getBadges(t));
   },
   'card-from-url': function (t, options) {
     // options.url has the url in question
