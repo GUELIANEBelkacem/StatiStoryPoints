@@ -80,7 +80,7 @@ var ICON = './images/ic_story_point.png';
 
 
 function getSPFromCard(card) {
-  const n = Trello.get(card, 'shared', `stati_story_point_value_${card.id}`)
+  const n = TrelloPowerUp.get(card, 'shared', `stati_story_point_value_${card.id}`)
 
 
   console.log(`The value gotten from the card is ${n}`);
@@ -93,7 +93,7 @@ function getSPFromCard(card) {
 }
 
 function setColumnName(id, name) {
-  Trello.put(`/lists/${id}`, {
+  TrelloPowerUp.put(`/lists/${id}`, {
     name: name
   })
 }
@@ -103,7 +103,7 @@ function setColumnName(id, name) {
 var updateLists = function () {
   //update the lists headers to show sum of story points
 
-  Trello.board.get().then((board) => {
+  TrelloPowerUp.board.get().then((board) => {
 
     const lists = board.lists
 
@@ -111,7 +111,7 @@ var updateLists = function () {
       if (list.closed)
         return
 
-      const cards = await Trello.lists.get(`${list.id}/cards`)
+      const cards = await TrelloPowerUp.lists.get(`${list.id}/cards`)
       console.log("cards")
       console.log(cards)
 
