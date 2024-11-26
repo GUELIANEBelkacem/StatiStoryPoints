@@ -111,7 +111,12 @@ var updateLists = function (t) {
       var spcount = 0;
       var tableID = list.id
       t.cards('all')
-        .filter((card) => card.get('idList') === tableID)
+        .filter((card) => {
+          console.log("card")
+          console.log(card)
+          var idList = card.get('idList')
+          return idList === tableID
+        })
         .then(function (card) {
 
           console.log("card")
