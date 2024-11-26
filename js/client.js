@@ -368,42 +368,55 @@ TrelloPowerUp.initialize({
     // include in your section.
 
     // we will just claim urls for Yellowstone
-    return [{
-      id: 'testtest', // optional if you aren't using a function for the title
+    var claimed = options.entries.filter(function (attachment) {
+      return true;
+    });
 
-      icon: ICON,
-      title: 'StatiStoryPoint Total',
-      content: {
-        type: 'image',
-        url: 'https://fakeimg.pl/600x400/a65858/543939?text=Hello',
-        height: 230
-      }
-    }];
+    // you can have more than one attachment section on a card
+    // you can group items together into one section, have a section
+    // per attachment, or anything in between.
+    if (claimed && claimed.length > 0) {
+      // if the title for your section requires a network call or other
+      // potentially length operation you can provide a function for the title
+      // that returns the section title. If you do so, provide a unique id for
+      // your section
+      return [{
+        id: 'testtest', // optional if you aren't using a function for the title
+        claimed: claimed,
+        icon: ICON,
+        title: 'StatiStoryPoints Section',
+        content: {
+          type: 'iframe',
+          url: t.signUrl('./section.html', { arg: 'you can pass your section args here' }),
+          height: 230
+        }
+      }];
+    } else {
+      return [];
+    }
   },
-  'attachment-thumbnail': function (t, options) {
-    // options.url has the url of the attachment for us
-    // return an object (or a Promise that resolves to it) with some or all of these properties:
-    // url, title, image, modified (Date), created (Date), createdBy, modifiedBy
+  // 'attachment-thumbnail': function (t, options) {
+  //   // options.url has the url of the attachment for us
+  //   // return an object (or a Promise that resolves to it) with some or all of these properties:
+  //   // url, title, image, modified (Date), created (Date), createdBy, modifiedBy
 
-    // You should use this if you have useful information about an attached URL but it
-    // doesn't warrant pulling it out into a section via the attachment-sections capability
-    // for example if you just want to show a preview image and give it a better name
-    // then attachment-thumbnail is the best option
-    console.log('attachment-thumbnail');
-    console.log(options);
-    return {
-      url: options.url,
-      title: '👉 ' + options.url + ' 👈',
-      image: {
-        url: ICON,
-        logo: true // false if you are using a thumbnail of the content
-      },
-    };
+  //   // You should use this if you have useful information about an attached URL but it
+  //   // doesn't warrant pulling it out into a section via the attachment-sections capability
+  //   // for example if you just want to show a preview image and give it a better name
+  //   // then attachment-thumbnail is the best option
+  //   return {
+  //     url: options.url,
+  //     title: '👉 ' + options.url + ' 👈',
+  //     image: {
+  //       url: GLITCH_ICON,
+  //       logo: true // false if you are using a thumbnail of the content
+  //     },
+  //   };
 
-    // if we don't actually have any valuable information about the url
-    // we can let Trello know like so:
-    // throw t.NotHandled();
-  },
+  //   // if we don't actually have any valuable information about the url
+  //   // we can let Trello know like so:
+  //   // throw t.NotHandled();
+  // },
   'board-buttons': function (t, options) {
     return [{
       // we can either provide a button that has a callback function
