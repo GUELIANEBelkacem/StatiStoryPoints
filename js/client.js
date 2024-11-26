@@ -127,7 +127,7 @@ function setColumnName(t, id, name) {
 
 var getTotalListSPCountBadge = async function (t) {
   var list = await t.list('all');
-  var spcount = await getTotalListSPCount(list)
+  var spcount = await getTotalListSPCount(t, list)
 
 
   return {
@@ -138,7 +138,7 @@ var getTotalListSPCountBadge = async function (t) {
   };
 }
 
-var getTotalListSPCount = async function (list) {
+var getTotalListSPCount = async function (t, list) {
   var spcount = 0;
 
   var cards = list.cards;
