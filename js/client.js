@@ -103,6 +103,7 @@ function setColumnName(t, id, name) {
 var updateLists = function (t) {
   //update the lists headers to show sum of story points
   console.log("getting lists")
+  console.log(t.getContext())
   t.lists('all')
     .then(function (lists) {
       lists.forEach(list => {
@@ -121,6 +122,7 @@ var updateLists = function (t) {
           // console.log(cardID)
           var x = t.get('board', 'shared', `stati_story_point_value_${cardID}`)
           console.log("x")
+          console.log(t.getContext())
           console.log(x)
           xx = parseInt(x)
           if (xx) spcount += xx
