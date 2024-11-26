@@ -122,7 +122,7 @@ var updateLists = function (t) {
           // console.log(cardID)
           var x = t.get('board', 'shared', `stati_story_point_value_${cardID}`)
           console.log("x")
-          console.log(t.getContext())
+
           console.log(x)
           xx = parseInt(x)
           if (xx) spcount += xx
@@ -137,7 +137,7 @@ var updateLists = function (t) {
 
         console.log("Updating list");
 
-        setColumnName(t, list.id, `${columnName} (Total SP: ${spcount})`)
+        //setColumnName(t, list.id, `${columnName} (Total SP: ${spcount})`)
       })
 
 
