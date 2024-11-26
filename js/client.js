@@ -107,29 +107,17 @@ var updateLists = function (t) {
     .then(function (lists) {
       lists.forEach(list => {
 
-        console.log("list")
-        console.log(list)
 
         var spcount = 0;
         var tableID = list.id
-
-        console.log("upper tableID")
-        console.log(tableID)
-
         var cards = list.cards;
-        console.log("cards")
-        console.log(cards)
 
         cards.forEach(function (card) {
-
-          console.log("card")
-          console.log(card)
-
 
           var cardID = card.id
           console.log("id")
           console.log(cardID)
-          var x = t.get('card', 'shared', `stati_story_point_value_${cardID}`)
+          var x = t.get(card, 'shared', `stati_story_point_value_${cardID}`)
           console.log("x")
           console.log(x)
           spcount += parseInt(x)
