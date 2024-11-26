@@ -100,92 +100,136 @@ function setColumnName(t, id, name) {
 // var randomBadgeColor = function () {
 //   return ['green', 'yellow', 'red', 'none'][Math.floor(Math.random() * 4)];
 // };
-var updateLists = async function (t) {
+// var updateLists = async function (t) {
 
 
-  var lists = await t.lists('all');
+//   var lists = await t.lists('all');
 
-  for (const list of lists) {
-    var spcount = 0;
+//   for (const list of lists) {
+//     var spcount = 0;
 
-    var tableID = list.id
-    var cards = list.cards;
+//     var tableID = list.id
+//     var cards = list.cards;
 
-    for (const card of cards) {
-      var cardID = card.id
-      var val = await t.get('board', 'shared', `stati_story_point_value_${cardID}`)
+//     for (const card of cards) {
+//       var cardID = card.id
+//       var val = await t.get('board', 'shared', `stati_story_point_value_${cardID}`)
 
-      valInt = parseInt(val)
-      if (valInt > 0) spcount += valInt
-    }
+//       valInt = parseInt(val)
+//       if (valInt > 0) spcount += valInt
+//     }
 
-    console.log(`spcount for ${list.name} is ${spcount}`)
-  }
+//     console.log(`spcount for ${list.name} is ${spcount}`)
+//   }
 
 
+// }
+
+var getTotalListSPCountBadge = async function (t) {
+  var list = await t.list('all');
+  var spcount = await getTotalListSPCount(list)
+
+
+  return {
+    title: 'Totale Story Points',
+    text: spcount,
+    icon: ICON,
+    color: 'green'
+  };
 }
 
+var getTotalListSPCount = async function (list) {
+  var spcount = 0;
 
-var getBadges = function (t) {
-  console.log('----------------------------------------- loading detailed badges -----------------------------------------');
-  return t.card('id')
-    .get('id')
-    .then(function (id) {
-      updateLists(t)
-      return t.get('board', 'shared', `stati_story_point_value_${id}`)
-    })
-    .then(function (val) {
-      console.log('loading detailed badges');
+  var cards = list.cards;
 
-      return [
-        //   {
-        //   // dynamic badges can have their function rerun after a set number
-        //   // of seconds defined by refresh. Minimum of 10 seconds.
-        //   dynamic: function () {
-        //     // we could also return a Promise that resolves to this as well if we needed to do something async first
-        //     return {
-        //       title: 'Detail Badge', // for detail badges only
-        //       text: 'Dynamic ' + (Math.random() * 100).toFixed(0).toString(),
-        //       icon: ICON, // for card front badges only
-        //       color: randomBadgeColor(),
-        //       refresh: 10 // in seconds
-        //     };
-        //   }
-        // }, 
-        {
-          // its best to use static badges unless you need your badges to refresh
-          // you can mix and match between static and dynamic
-          title: 'StatiStoryPoints', // for detail badges only
-          text: val,
-          icon: ICON, // for card front badges only
-          color: 'green'
-        }
-        // , {
-        //   // card detail badges (those that appear on the back of cards)
-        //   // also support callback functions so that you can open for example
-        //   // open a popup on click
-        //   title: 'Popup Detail Badge', // for detail badges only
-        //   text: 'Popup',
-        //   icon: ICON, // for card front badges only
-        //   callback: function (context) { // function to run on click
-        //     return context.popup({
-        //       title: 'Card Detail Badge Popup',
-        //       url: './settings.html',
-        //       height: 184 // we can always resize later, but if we know the size in advance, its good to tell Trello
-        //     });
-        //   }
-        // }, {
-        //   // or for simpler use cases you can also provide a url
-        //   // when the user clicks on the card detail badge they will
-        //   // go to a new tab at that url
-        //   title: 'URL Detail Badge', // for detail badges only
-        //   text: 'URL',
-        //   icon: ICON, // for card front badges only
-        //   url: 'https://trello.com/home',
-        //   target: 'Trello Landing Page' // optional target for above url
-        // }
-      ];
-    });
+  for (const card of cards) {
+    var cardID = card.id
+    var val = await t.get('board', 'shared', `stati_story_point_value_${cardID}`)
+
+    valInt = parseInt(val)
+    if (valInt > 0) spcount += valInt
+  }
+
+  return spcount
+}
+
+var getBadges = async function (t) {
+
+  const card = await t.card('id')
+  const id = card.id
+
+  const sp = await t.get('board', 'shared', `stati_story_point_value_${id}`);
+
+  return [
+    {
+      title: 'StatiStoryPoints',
+      text: sp,
+      icon: ICON,
+      color: 'green'
+    },
+    await getTotalListSPCountBadge(t)
+  ]
+
+  // return t.card('id')
+  //   .get('id')
+  //   .then(function (id) {
+
+  //     return t.get('board', 'shared', `stati_story_point_value_${id}`)
+  //   })
+  //   .then(function (val) {
+  //     console.log('loading detailed badges');
+
+  //     return [
+  //       //   {
+  //       //   // dynamic badges can have their function rerun after a set number
+  //       //   // of seconds defined by refresh. Minimum of 10 seconds.
+  //       //   dynamic: function () {
+  //       //     // we could also return a Promise that resolves to this as well if we needed to do something async first
+  //       //     return {
+  //       //       title: 'Detail Badge', // for detail badges only
+  //       //       text: 'Dynamic ' + (Math.random() * 100).toFixed(0).toString(),
+  //       //       icon: ICON, // for card front badges only
+  //       //       color: randomBadgeColor(),
+  //       //       refresh: 10 // in seconds
+  //       //     };
+  //       //   }
+  //       // }, 
+  //       {
+  //         // its best to use static badges unless you need your badges to refresh
+  //         // you can mix and match between static and dynamic
+  //         title: 'StatiStoryPoints', // for detail badges only
+  //         text: val,
+  //         icon: ICON, // for card front badges only
+  //         color: 'green'
+  //       },
+  //       await getTotalListSPCountBadge(t),
+  //       // , {
+  //       //   // card detail badges (those that appear on the back of cards)
+  //       //   // also support callback functions so that you can open for example
+  //       //   // open a popup on click
+  //       //   title: 'Popup Detail Badge', // for detail badges only
+  //       //   text: 'Popup',
+  //       //   icon: ICON, // for card front badges only
+  //       //   callback: function (context) { // function to run on click
+  //       //     return context.popup({
+  //       //       title: 'Card Detail Badge Popup',
+  //       //       url: './settings.html',
+  //       //       height: 184 // we can always resize later, but if we know the size in advance, its good to tell Trello
+  //       //     });
+  //       //   }
+  //       // }, {
+  //       //   // or for simpler use cases you can also provide a url
+  //       //   // when the user clicks on the card detail badge they will
+  //       //   // go to a new tab at that url
+  //       //   title: 'URL Detail Badge', // for detail badges only
+  //       //   text: 'URL',
+  //       //   icon: ICON, // for card front badges only
+  //       //   url: 'https://trello.com/home',
+  //       //   target: 'Trello Landing Page' // optional target for above url
+  //       // }
+  //     ];
+  //   });
 };
 
 var boardButtonCallback = function (t) {
@@ -377,7 +421,7 @@ TrelloPowerUp.initialize({
     }];
   },
   'card-badges': function (t, options) {
-    return getBadges(t);
+    return Promise(getBadges(t));
   },
   'card-buttons': function (t, options) {
     return [{
@@ -389,7 +433,7 @@ TrelloPowerUp.initialize({
     }];
   },
   'card-detail-badges': function (t, options) {
-    return getBadges(t);
+    return Promise(getBadges(t));
   },
   'card-from-url': function (t, options) {
     // options.url has the url in question
