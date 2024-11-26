@@ -114,6 +114,8 @@ var updateLists = function (t) {
         .filter((card) => {
 
           var idList = card.idList
+          console.log("idList")
+          console.log(idList)
           return idList === tableID
         })
         .then(function (card) {
