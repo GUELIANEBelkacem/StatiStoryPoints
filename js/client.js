@@ -119,7 +119,7 @@ var updateLists = function (t) {
           var cardID = card.id
           console.log("id")
           console.log(cardID)
-          var x = t.get(cardID, 'shared', `stati_story_point_value_${cardID}`)
+          var x = 0//t.get(cardID, 'shared', `stati_story_point_value_${cardID}`)
           console.log("x")
           console.log(x)
           xx = parseInt(x)
