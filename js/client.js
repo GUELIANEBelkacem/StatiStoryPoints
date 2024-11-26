@@ -421,7 +421,12 @@ TrelloPowerUp.initialize({
     }];
   },
   'card-badges': function (t, options) {
-    return new Promise(function (resolve) { resolve(getBadges(t)) });
+    return new Promise(function (resolve) {
+      getBadges(t).then((badges) => {
+        return resolve(badges);
+      });
+
+    });
   },
   'card-buttons': function (t, options) {
     return [{
