@@ -100,30 +100,27 @@ function setColumnName(id, name) {
 // var randomBadgeColor = function () {
 //   return ['green', 'yellow', 'red', 'none'][Math.floor(Math.random() * 4)];
 // };
-var updateLists = function () {
+var updateLists = function (t) {
   //update the lists headers to show sum of story points
+  console.log("getting lists")
+  t.lists('all')
+  then(function (list) {
+    console.log("list")
+    console.log(list)
 
-  TrelloPowerUp.board.get().then((board) => {
+    const cards = list.cards
+    console.log("cards")
+    console.log(cards)
 
-    const lists = board.lists
+    const storyPoints = cards.map(card => Number(getSPFromCard(card)))
 
-    lists.forEach(async (list) => {
-      if (list.closed)
-        return
+    const total = storyPoints.reduce((a, b) => a + b, 0)
+    const columnName = list.name.replace(/ \(Total SP: \d+\)/, '')
 
-      const cards = await TrelloPowerUp.lists.get(`${list.id}/cards`)
-      console.log("cards")
-      console.log(cards)
+    console.log("Updating list");
 
-      const storyPoints = cards.map(card => Number(getSPFromCard(card)))
+    setColumnName(list.id, `${columnName} (Total SP: ${total})`)
 
-      const total = storyPoints.reduce((a, b) => a + b, 0)
-      const columnName = list.name.replace(/ \(Total SP: \d+\)/, '')
-
-      console.log("Updating list");
-
-      setColumnName(list.id, `${columnName} (Total SP: ${total})`)
-    })
 
   });
 }
@@ -132,7 +129,7 @@ var getBadges = function (t) {
   return t.card('id')
     .get('id')
     .then(function (id) {
-      updateLists()
+      updateLists(t)
       return t.get('card', 'shared', `stati_story_point_value_${id}`)
     })
     .then(function (val) {
