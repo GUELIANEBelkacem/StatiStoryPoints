@@ -100,59 +100,33 @@ function setColumnName(t, id, name) {
 // var randomBadgeColor = function () {
 //   return ['green', 'yellow', 'red', 'none'][Math.floor(Math.random() * 4)];
 // };
-var updateLists = function (t) {
+var updateLists = async function (t) {
   var spcount = 0;
-  //update the lists headers to show sum of story points
-  console.log("getting lists")
-  console.log(t.getContext())
-  t.lists('all')
-    .then(function (lists) {
-      lists.forEach(list => {
 
+  var lists = await t.lists('all');
 
+  lists.forEach(list => {
 
-        var tableID = list.id
-        var cards = list.cards;
+    var tableID = list.id
+    var cards = list.cards;
 
-        cards.forEach(function (card) {
+    cards.forEach(async function (card) {
 
-          // console.log("card")
-          // console.log(card)
-          var cardID = card.id
-          // console.log("id")
-          // console.log(cardID)
-          var x = t.get('board', 'shared', `stati_story_point_value_${cardID}`)
-            .then(function (val) {
-              console.log("val")
-              console.log(val)
+      var cardID = card.id
 
-              valInt = parseInt(val)
-              if (valInt > 0) spcount += valInt
+      var val = await t.get('board', 'shared', `stati_story_point_value_${cardID}`)
 
-              if (spcount > 0) {
-                console.log("spcount")
-                console.log(spcount)
-              }
-
-            })
-
-
-        });
-
-
-
-
-        //setColumnName(t, list.id, `${columnName} (Total SP: ${spcount})`)
-      })
-
-
-
-      //const columnName = list.name.replace(/ \(Total SP: \d+\)/, '')
-
-      console.log("Updating list");
+      valInt = parseInt(val)
+      if (valInt > 0) spcount += valInt
 
     });
 
+
+    console.log(`spcount for ${list.name} is ${spcount}`)
+    console.log(spcount)
+
+
+  })
 
 }
 
