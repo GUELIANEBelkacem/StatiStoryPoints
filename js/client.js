@@ -101,6 +101,7 @@ function setColumnName(t, id, name) {
 //   return ['green', 'yellow', 'red', 'none'][Math.floor(Math.random() * 4)];
 // };
 var updateLists = function (t) {
+  var spcount = 0;
   //update the lists headers to show sum of story points
   console.log("getting lists")
   console.log(t.getContext())
@@ -109,7 +110,7 @@ var updateLists = function (t) {
       lists.forEach(list => {
 
 
-        var spcount = 0;
+
         var tableID = list.id
         var cards = list.cards;
 
@@ -133,19 +134,21 @@ var updateLists = function (t) {
         });
 
 
-        console.log("spcount")
-        console.log(spcount)
 
-        const columnName = list.name.replace(/ \(Total SP: \d+\)/, '')
-
-        console.log("Updating list");
 
         //setColumnName(t, list.id, `${columnName} (Total SP: ${spcount})`)
       })
 
+      console.log("spcount")
+      console.log(spcount)
 
+      //const columnName = list.name.replace(/ \(Total SP: \d+\)/, '')
+
+      console.log("Updating list");
 
     });
+
+
 }
 
 
