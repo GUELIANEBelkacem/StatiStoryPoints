@@ -395,7 +395,7 @@ TrelloPowerUp.initialize({
       url: options.url,
       title: '👉 ' + options.url + ' 👈',
       image: {
-        url: GLITCH_ICON,
+        url: ICON,
         logo: true // false if you are using a thumbnail of the content
       },
     };
