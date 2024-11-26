@@ -121,11 +121,14 @@ var updateLists = function (t) {
           // console.log("id")
           // console.log(cardID)
           var x = t.get('board', 'shared', `stati_story_point_value_${cardID}`)
-          console.log("x")
+            .then(function (val) {
+              console.log("val")
+              console.log(val)
 
-          console.log(x)
-          xx = parseInt(x)
-          if (xx) spcount += xx
+              valInt = parseInt(val)
+              if (valInt) spcount += valInt
+            })
+
 
         });
 
