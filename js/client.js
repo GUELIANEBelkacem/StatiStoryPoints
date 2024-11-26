@@ -104,51 +104,59 @@ var updateLists = function (t) {
   //update the lists headers to show sum of story points
   console.log("getting lists")
   t.lists('all')
-    .then(function (list) {
-      console.log("list")
-      console.log(list)
+    .then(function (lists) {
+      lists.forEach(list => {
 
-      var spcount = 0;
-      var tableID = list.id
+        console.log("list")
+        console.log(list)
 
-      console.log("upper tableID")
-      console.log(tableID)
+        var spcount = 0;
+        var tableID = list.id
 
-      t.cards('all')
-        .filter((card) => {
+        console.log("upper tableID")
+        console.log(tableID)
 
-          var idList = card.idList
-          console.log("idList")
-          console.log(idList)
-          console.log("tableID")
-          console.log(tableID)
-          return idList === tableID
-        })
-        .then(function (card) {
+        var cards = list.cards;
+        console.log("cards")
+        console.log(cards)
 
-          console.log("card")
-          console.log(card)
+        t.cards('all')
+          .filter((card) => {
 
+            var idList = card.idList
+            console.log("idList")
+            console.log(idList)
+            console.log("tableID")
+            console.log(tableID)
+            return idList === tableID
+          })
+          .then(function (card) {
 
-          var cardID = card.id
-          console.log("id")
-          console.log(cardID)
-          var x = t.get('card', 'shared', `stati_story_point_value_${cardID}`)
-          console.log("x")
-          console.log(x)
-          spcount += x
-
-        });
+            console.log("card")
+            console.log(card)
 
 
-      console.log("spcount")
-      console.log(spcount)
+            var cardID = card.id
+            console.log("id")
+            console.log(cardID)
+            var x = t.get('card', 'shared', `stati_story_point_value_${cardID}`)
+            console.log("x")
+            console.log(x)
+            spcount += x
 
-      const columnName = list.name.replace(/ \(Total SP: \d+\)/, '')
+          });
 
-      console.log("Updating list");
 
-      setColumnName(list.id, `${columnName} (Total SP: ${spcount})`)
+        console.log("spcount")
+        console.log(spcount)
+
+        const columnName = list.name.replace(/ \(Total SP: \d+\)/, '')
+
+        console.log("Updating list");
+
+        setColumnName(list.id, `${columnName} (Total SP: ${spcount})`)
+      })
+
 
 
     });
