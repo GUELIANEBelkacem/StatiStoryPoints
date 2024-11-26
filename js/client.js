@@ -84,6 +84,7 @@ var ICON = './images/ic_story_point.png';
 // };
 
 var getBadges = function (t) {
+  console.log('----------------------------------------- loading detailed badges -----------------------------------------');
   return t.card('id')
     .get('id')
     .then(function (id) {
@@ -235,8 +236,10 @@ var cardButtonCallback = function (t, opts) {
           .then(function (id) { t.set('card', 'shared', `stati_story_point_value_${id}`, fibItem) })
           .then(function () {
             console.log('value set');
-            return t.closePopup();
+
           });
+
+        return t.closePopup();
 
       }
     };
