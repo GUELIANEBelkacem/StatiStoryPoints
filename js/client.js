@@ -134,9 +134,11 @@ var getTotalListSPCountBadge = async function (t) {
   // $("#board .list").each(function (_, l) {
   //   $(".list-header-name", l).append(" (" + spcount + ")");
   // });
-  var xxx = document.querySelectorAll('*');
+  document.querySelectorAll('iframe').forEach(item =>
+    console.log(item.contentWindow.document.body.querySelectorAll('*'))
+  )
 
-  console.log(xxx)
+  //console.log(xxx)
 
   console.log('listName')
   console.log(listName)
