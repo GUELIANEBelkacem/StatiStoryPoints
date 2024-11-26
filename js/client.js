@@ -380,28 +380,30 @@ TrelloPowerUp.initialize({
       }
     }];
   },
-  // 'attachment-thumbnail': function (t, options) {
-  //   // options.url has the url of the attachment for us
-  //   // return an object (or a Promise that resolves to it) with some or all of these properties:
-  //   // url, title, image, modified (Date), created (Date), createdBy, modifiedBy
+  'attachment-thumbnail': function (t, options) {
+    // options.url has the url of the attachment for us
+    // return an object (or a Promise that resolves to it) with some or all of these properties:
+    // url, title, image, modified (Date), created (Date), createdBy, modifiedBy
 
-  //   // You should use this if you have useful information about an attached URL but it
-  //   // doesn't warrant pulling it out into a section via the attachment-sections capability
-  //   // for example if you just want to show a preview image and give it a better name
-  //   // then attachment-thumbnail is the best option
-  //   return {
-  //     url: options.url,
-  //     title: '👉 ' + options.url + ' 👈',
-  //     image: {
-  //       url: GLITCH_ICON,
-  //       logo: true // false if you are using a thumbnail of the content
-  //     },
-  //   };
+    // You should use this if you have useful information about an attached URL but it
+    // doesn't warrant pulling it out into a section via the attachment-sections capability
+    // for example if you just want to show a preview image and give it a better name
+    // then attachment-thumbnail is the best option
+    console.log('attachment-thumbnail');
+    console.log(options);
+    return {
+      url: options.url,
+      title: '👉 ' + options.url + ' 👈',
+      image: {
+        url: GLITCH_ICON,
+        logo: true // false if you are using a thumbnail of the content
+      },
+    };
 
-  //   // if we don't actually have any valuable information about the url
-  //   // we can let Trello know like so:
-  //   // throw t.NotHandled();
-  // },
+    // if we don't actually have any valuable information about the url
+    // we can let Trello know like so:
+    // throw t.NotHandled();
+  },
   'board-buttons': function (t, options) {
     return [{
       // we can either provide a button that has a callback function
