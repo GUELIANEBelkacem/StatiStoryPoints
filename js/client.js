@@ -79,15 +79,60 @@ t.getAll();
 var ICON = './images/ic_story_point.png';
 
 
+function getSPFromCard(card) {
+  const n = Trello.get(card, 'shared', `stati_story_point_value_${card.id}`)
+
+
+  console.log(`The value gotten from the card is ${n}`);
+  const p = /\((\d+)\)/
+  const m = n.match(p)
+  if (m)
+    return Number(m[1])
+
+  return 0
+}
+
+function setColumnName(id, name) {
+  Trello.put(`/lists/${id}`, {
+    name: name
+  })
+}
 // var randomBadgeColor = function () {
 //   return ['green', 'yellow', 'red', 'none'][Math.floor(Math.random() * 4)];
 // };
+var updateLists = function () {
+  //update the lists headers to show sum of story points
 
+  Trello.board.get().then((board) => {
+
+    const lists = board.lists
+
+    lists.forEach(async (list) => {
+      if (list.closed)
+        return
+
+      const cards = await Trello.lists.get(`${list.id}/cards`)
+      console.log("cards")
+      console.log(cards)
+
+      const storyPoints = cards.map(card => Number(getSPFromCard(card)))
+
+      const total = storyPoints.reduce((a, b) => a + b, 0)
+      const columnName = list.name.replace(/ \(Total SP: \d+\)/, '')
+
+      console.log("Updating list");
+
+      setColumnName(list.id, `${columnName} (Total SP: ${total})`)
+    })
+
+  });
+}
 var getBadges = function (t) {
   console.log('----------------------------------------- loading detailed badges -----------------------------------------');
   return t.card('id')
     .get('id')
     .then(function (id) {
+      updateLists()
       return t.get('card', 'shared', `stati_story_point_value_${id}`)
     })
     .then(function (val) {
@@ -332,9 +377,9 @@ TrelloPowerUp.initialize({
       target: 'Inspiring Boards' // optional target for above url
     }];
   },
-  // 'card-badges': function (t, options) {
-  //   return getBadges(t);
-  // },
+  'card-badges': function (t, options) {
+    return getBadges(t);
+  },
   'card-buttons': function (t, options) {
     return [{
       // usually you will provide a callback function to be run on button click
