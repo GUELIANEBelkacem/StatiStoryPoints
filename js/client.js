@@ -104,25 +104,25 @@ var updateLists = function (t) {
   //update the lists headers to show sum of story points
   console.log("getting lists")
   t.lists('all')
-  then(function (list) {
-    console.log("list")
-    console.log(list)
+    .then(function (list) {
+      console.log("list")
+      console.log(list)
 
-    const cards = list.cards
-    console.log("cards")
-    console.log(cards)
+      const cards = list.cards
+      console.log("cards")
+      console.log(cards)
 
-    const storyPoints = cards.map(card => Number(getSPFromCard(card)))
+      const storyPoints = cards.map(card => Number(getSPFromCard(card)))
 
-    const total = storyPoints.reduce((a, b) => a + b, 0)
-    const columnName = list.name.replace(/ \(Total SP: \d+\)/, '')
+      const total = storyPoints.reduce((a, b) => a + b, 0)
+      const columnName = list.name.replace(/ \(Total SP: \d+\)/, '')
 
-    console.log("Updating list");
+      console.log("Updating list");
 
-    setColumnName(list.id, `${columnName} (Total SP: ${total})`)
+      setColumnName(list.id, `${columnName} (Total SP: ${total})`)
 
 
-  });
+    });
 }
 var getBadges = function (t) {
   console.log('----------------------------------------- loading detailed badges -----------------------------------------');
