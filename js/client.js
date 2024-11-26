@@ -76,9 +76,8 @@ t.getAll();
 
 */
 
-var GLITCH_ICON = './images/glitch.svg';
-var WHITE_ICON = './images/icon-white.svg';
-var GRAY_ICON = './images/icon-gray.svg';
+var ICON = './images/ic_story_point.png';
+
 
 var randomBadgeColor = function () {
   return ['green', 'yellow', 'red', 'none'][Math.floor(Math.random() * 4)];
@@ -98,7 +97,7 @@ var getBadges = function (t) {
           return {
             title: 'Detail Badge', // for detail badges only
             text: 'Dynamic ' + (Math.random() * 100).toFixed(0).toString(),
-            icon: GRAY_ICON, // for card front badges only
+            icon: ICON, // for card front badges only
             color: randomBadgeColor(),
             refresh: 10 // in seconds
           };
@@ -108,7 +107,7 @@ var getBadges = function (t) {
         // you can mix and match between static and dynamic
         title: 'Detail Badge', // for detail badges only
         text: 'Static',
-        icon: GRAY_ICON, // for card front badges only
+        icon: ICON, // for card front badges only
         color: null
       }, {
         // card detail badges (those that appear on the back of cards)
@@ -116,7 +115,7 @@ var getBadges = function (t) {
         // open a popup on click
         title: 'Popup Detail Badge', // for detail badges only
         text: 'Popup',
-        icon: GRAY_ICON, // for card front badges only
+        icon: ICON, // for card front badges only
         callback: function (context) { // function to run on click
           return context.popup({
             title: 'Card Detail Badge Popup',
@@ -130,7 +129,7 @@ var getBadges = function (t) {
         // go to a new tab at that url
         title: 'URL Detail Badge', // for detail badges only
         text: 'URL',
-        icon: GRAY_ICON, // for card front badges only
+        icon: ICON, // for card front badges only
         url: 'https://trello.com/home',
         target: 'Trello Landing Page' // optional target for above url
       }];
@@ -203,62 +202,31 @@ var boardButtonCallback = function (t) {
   });
 };
 
-var cardButtonCallback = function (t) {
-  // Trello Power-Up Popups are actually pretty powerful
-  // Searching is a pretty common use case, so why reinvent the wheel
-  var items = ['acad', 'arch', 'badl', 'crla', 'grca', 'yell', 'yose'].map(function (parkCode) {
-    var urlForCode = 'http://www.nps.gov/' + parkCode + '/';
-    var nameForCode = '🏞 ' + parkCode.toUpperCase();
+var cardButtonCallback = function (t, opts) {
+  var items = ['1', '2', '3', '5', '8', '13', '21', '34', '55'].map(function (fibItem) {
+
     return {
-      text: 'Yo yo yo',
-      url: urlForCode,
+      text: fibItem,
       callback: function (t) {
-        // In this case we want to attach that park to the card as an attachment
-        // but first let's ensure that the user can write on this model
-        if (t.memberCanWriteToModel('card')) {
-          return t.attach({ url: urlForCode, name: nameForCode })
-            .then(function () {
-              // once that has completed we should tidy up and close the popup
-              return t.closePopup();
-            });
-        } else {
-          console.log("Oh no! You don't have permission to add attachments to this card.")
-          return t.closePopup(); // We're just going to close the popup for now.
-        };
+
+        console.log(t);
+        console.log(opts);
+        return t.set('card', 'private', 'storyPoints', fibItem)
+          .then(function () {
+            return t.closePopup();
+          });
       }
     };
   });
 
-  // we could provide a standard iframe popup, but in this case we
-  // will let Trello do the heavy lifting
+
   return t.popup({
-    title: 'Popup Search Example',
+    title: 'Choisir la complexité',
     items: items, // Trello will search client-side based on the text property of the items
-    search: {
-      count: 5, // How many items to display at a time
-      placeholder: 'Search National Parks',
-      empty: 'No parks found'
-    }
+
   });
 
-  // in the above case we let Trello do the searching client side
-  // but what if we don't have all the information up front?
-  // no worries, instead of giving Trello an array of `items` you can give it a function instead
-  /*
-  return t.popup({
-    title: 'Popup Async Search',
-    items: function(t, options) {
-      // use options.search which is the search text entered so far
-      // and return a Promise that resolves to an array of items
-      // similar to the items you provided in the client side version above
-    },
-    search: {
-      placeholder: 'Start typing your search',
-      empty: 'Huh, nothing there',
-      searching: 'Scouring the internet...'
-    }
-  });
-  */
+
 };
 
 // We need to call initialize to get all of our capability handles set up and registered with Trello
@@ -326,13 +294,13 @@ TrelloPowerUp.initialize({
     return [{
       // we can either provide a button that has a callback function
       // that callback function should probably open a popup, overlay, or boardBar
-      icon: WHITE_ICON,
-      text: 'Popup',
+      icon: ICON,
+      text: 'StatiStoryPoints',
       callback: boardButtonCallback
     }, {
       // or we can also have a button that is just a simple url
       // clicking it will open a new tab at the provided url
-      icon: WHITE_ICON,
+      icon: ICON,
       text: 'URL',
       url: 'https://trello.com/inspiration',
       target: 'Inspiring Boards' // optional target for above url
@@ -345,18 +313,10 @@ TrelloPowerUp.initialize({
     return [{
       // usually you will provide a callback function to be run on button click
       // we recommend that you use a popup on click generally
-      icon: GRAY_ICON, // don't use a colored icon here
-      text: 'Open Popup',
+      icon: ICON, // don't use a colored icon here
+      text: 'StatiStoryPoints',
       callback: cardButtonCallback
-    }
-      // , {
-      //   // but of course, you could also just kick off to a url if that's your thing
-      //   icon: GRAY_ICON,
-      //   text: 'Just a URL',
-      //   url: 'https://developers.trello.com',
-      //   target: 'Trello Developer Site' // optional target for above url
-      // }
-    ];
+    }];
   },
   'card-detail-badges': function (t, options) {
     return getBadges(t);
@@ -384,7 +344,7 @@ TrelloPowerUp.initialize({
     // in our response we can include an icon as well as the replacement text
 
     return {
-      icon: GRAY_ICON, // don't use a colored icon here
+      icon: ICON, // don't use a colored icon here
       text: '👉 ' + options.url + ' 👈'
     };
 
@@ -455,3 +415,19 @@ TrelloPowerUp.initialize({
 });
 
 console.log('Loaded by: ' + document.referrer);
+(function () {
+
+  Trello.board.get().then((board) => {
+
+    const lists = board.lists
+
+    lists.forEach(async (list) => {
+
+
+      console.log(list)
+
+
+    })
+
+  })
+}())
