@@ -367,6 +367,8 @@ TrelloPowerUp.initialize({
     // you can look through them and 'claim' any that you want to
     // include in your section.
 
+    console.log('attachment-sections');
+    console.log(options);
     // we will just claim urls for Yellowstone
     var claimed = options.entries.filter(function (attachment) {
       return true;
