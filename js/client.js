@@ -119,7 +119,7 @@ var updateLists = function (t) {
           var cardID = card.id
           console.log("id")
           console.log(cardID)
-          var x = t.get(cardID, 'shared', `stati_story_point_value_${cardID}`)
+          var x = t.get('board', 'shared', `stati_story_point_value_${cardID}`)
           console.log("x")
           console.log(x)
           xx = parseInt(x)
@@ -150,7 +150,7 @@ var getBadges = function (t) {
     .get('id')
     .then(function (id) {
       updateLists(t)
-      return t.get('card', 'shared', `stati_story_point_value_${id}`)
+      return t.get('board', 'shared', `stati_story_point_value_${id}`)
     })
     .then(function (val) {
       console.log('loading detailed badges');
@@ -295,7 +295,7 @@ var cardButtonCallback = function (t, opts) {
 
         t.card('id')
           .get('id')
-          .then(function (id) { t.set('card', 'shared', `stati_story_point_value_${id}`, fibItem) })
+          .then(function (id) { t.set('board', 'shared', `stati_story_point_value_${id}`, fibItem) })
           .then(function () {
             console.log('value set');
 
