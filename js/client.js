@@ -92,8 +92,8 @@ function getSPFromCard(card) {
   return 0
 }
 
-function setColumnName(id, name) {
-  TrelloPowerUp.put(`/lists/${id}`, {
+function setColumnName(t, id, name) {
+  t.put(`/lists/${id}`, {
     name: name
   })
 }
@@ -120,31 +120,21 @@ var updateLists = function (t) {
         console.log("cards")
         console.log(cards)
 
-        t.cards('all')
-          .filter((card) => {
+        cards.forEach(function (card) {
 
-            var idList = card.idList
-            console.log("idList")
-            console.log(idList)
-            console.log("tableID")
-            console.log(tableID)
-            return idList === tableID
-          })
-          .then(function (card) {
-
-            console.log("card")
-            console.log(card)
+          console.log("card")
+          console.log(card)
 
 
-            var cardID = card.id
-            console.log("id")
-            console.log(cardID)
-            var x = t.get('card', 'shared', `stati_story_point_value_${cardID}`)
-            console.log("x")
-            console.log(x)
-            spcount += x
+          var cardID = card.id
+          console.log("id")
+          console.log(cardID)
+          var x = t.get('card', 'shared', `stati_story_point_value_${cardID}`)
+          console.log("x")
+          console.log(x)
+          spcount += x
 
-          });
+        });
 
 
         console.log("spcount")
@@ -154,7 +144,7 @@ var updateLists = function (t) {
 
         console.log("Updating list");
 
-        setColumnName(list.id, `${columnName} (Total SP: ${spcount})`)
+        setColumnName(t, list.id, `${columnName} (Total SP: ${spcount})`)
       })
 
 
