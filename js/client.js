@@ -174,21 +174,27 @@ var getTotalListSPCount = async function (t, list) {
 
 var getBadges = async function (t) {
 
-  const card = await t.card('id')
+  const card = await t.card('id', 'name')
   const id = card.id
 
   const sp = await t.get('board', 'shared', `stati_story_point_value_${id}`);
 
+  if (card.name.indexOf('-|Recap') === 0 || card.name.indexOf('|Recap') === 0) {
+    return [
+      await getTotalListSPCountBadge(t)
+    ]
+  }
+  else {
+    return [
+      {
+        title: 'StatiStoryPoints',
+        text: sp,
+        icon: ICON,
+        color: 'green'
+      }
+    ]
+  }
 
-  return [
-    {
-      title: 'StatiStoryPoints',
-      text: sp,
-      icon: ICON,
-      color: 'green'
-    },
-    await getTotalListSPCountBadge(t)
-  ]
 
   // return t.card('id')
   //   .get('id')
