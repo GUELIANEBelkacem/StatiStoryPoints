@@ -137,6 +137,7 @@ var getTotalListSPCountBadge = async function (t) {
     //   name: 'Recap image', // optional
     //   url: 'https://fakeimg.pl/600x400/a65858/543939?text=Hello' // required
     // });
+    card.name = "Helloooooooooooo"
     console.log('Recap card')
     console.log(t);
   }
