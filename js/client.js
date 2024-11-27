@@ -300,7 +300,7 @@ var statStoryPointsTotalButtonCallback = async function (t, opts) {
   console.log(opts);
   await t.attach({
     name: 'Recap image', // optional
-    url: `https://fakeimg.pl/300x200/30bcd1/ffffff?text=${spcount}&font=bebas&font_size=100` // required
+    url: `https://fakeimg.pl/300x100/30bcd1/ffffff?text=${spcount}&font=bebas&font_size=80` // required
   });
 }
 
