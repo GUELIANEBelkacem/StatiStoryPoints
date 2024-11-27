@@ -225,6 +225,7 @@ var getBadges = async function (t, opts) {
   }
   else {
     const sp = await t.get('board', 'shared', `stati_story_point_value_${id}`);
+    if (!sp || sp < 1) return []
     return [
       {
         title: 'StatiStoryPoints',
