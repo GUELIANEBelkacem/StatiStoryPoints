@@ -149,10 +149,11 @@ var getTotalListSPCountBadge = async function (t) {
   }
 
   return {
-    title: 'Totale Story Points',
+    title: 'Total Story Points',
     text: spcount,
     icon: ICON,
-    color: 'green'
+    color: 'green',
+    refresh: 10
   };
 }
 
