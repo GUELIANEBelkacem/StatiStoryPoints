@@ -125,7 +125,7 @@ function setColumnName(t, id, name) {
 
 // }
 
-var getTotalListSPCountBadge = async function (t) {
+var getTotalListSPCountBadge = async function (t, opts) {
   var list = await t.list('all');
   const card = await t.card('name')
   var spcount = await getTotalListSPCount(t, list)
@@ -140,7 +140,7 @@ var getTotalListSPCountBadge = async function (t) {
 
   }
 
-  if (card.name.indexOf('|Recap') === 0) {
+  if (card.name.indexOf('|Recap') === 0 && !opts.attachments) {
     await t.attach({
       name: 'Recap image', // optional
       url: `https://fakeimg.pl/600x400/a65858/543939?text=${spcount}` // required
@@ -149,14 +149,18 @@ var getTotalListSPCountBadge = async function (t) {
   }
 
   return {
-    title: 'Total Story Points',
-    text: spcount,
-    icon: ICON,
-    color: 'green',
-    refresh: 10
-  };
-}
+    dynamic: function () {
+      return {
+        title: 'Total Story Points',
+        text: spcount,
+        icon: ICON,
+        color: 'green',
+        refresh: 10
+      };
+    }
 
+  }
+}
 var getTotalListSPCount = async function (t, list) {
   var spcount = 0;
 
@@ -173,7 +177,7 @@ var getTotalListSPCount = async function (t, list) {
   return spcount
 }
 
-var getBadges = async function (t) {
+var getBadges = async function (t, opts) {
 
   const card = await t.card('id', 'name')
   const id = card.id
@@ -182,7 +186,7 @@ var getBadges = async function (t) {
 
   if (card.name.indexOf('-|Recap') === 0 || card.name.indexOf('|Recap') === 0) {
     return [
-      await getTotalListSPCountBadge(t)
+      await getTotalListSPCountBadge(t, opts)
     ]
   }
   else {
@@ -463,7 +467,7 @@ TrelloPowerUp.initialize({
   },
   'card-badges': function (t, options) {
     return new Promise((resolve) => {
-      getBadges(t).then((badges) => {
+      getBadges(t, options).then((badges) => {
         return resolve(badges);
       });
 
@@ -479,7 +483,7 @@ TrelloPowerUp.initialize({
     }];
   },
   'card-detail-badges': function (t, options) {
-    return getBadges(t)
+    return getBadges(t, options)
   },
   'card-from-url': function (t, options) {
     // options.url has the url in question
