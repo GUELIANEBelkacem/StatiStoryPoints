@@ -132,7 +132,7 @@ var getTotalListSPCountBadge = async function (t) {
 
   const listName = list.name
 
-  if (card.name.indexOf('||Recap') === 0) {
+  if (card.name.indexOf('-|Recap') === 0) {
     await t.attach({
       name: 'Recap image', // optional
       url: `https://fakeimg.pl/600x400/a65858/543939?text=${spcount}` // required
