@@ -79,24 +79,7 @@ t.getAll();
 var ICON = './images/ic_story_point.png';
 
 
-function getSPFromCard(card) {
-  const n = TrelloPowerUp.get(card, 'shared', `stati_story_point_value_${card.id}`)
 
-
-  console.log(`The value gotten from the card is ${n}`);
-  const p = /\((\d+)\)/
-  const m = n.match(p)
-  if (m)
-    return Number(m[1])
-
-  return 0
-}
-
-function setColumnName(t, id, name) {
-  t.put(`/lists/${id}`, {
-    name: name
-  })
-}
 // var randomBadgeColor = function () {
 //   return ['green', 'yellow', 'red', 'none'][Math.floor(Math.random() * 4)];
 // };
@@ -125,42 +108,76 @@ function setColumnName(t, id, name) {
 
 // }
 
-var getTotalListSPCountBadge = async function (t, opts) {
-  var list = await t.list('all');
-  const card = await t.card('name')
-  var spcount = await getTotalListSPCount(t, list)
 
-  const listName = list.name
 
-  if (card.name.indexOf('-|Recap') === 0) {
-    await t.attach({
-      name: 'Recap image', // optional
-      url: `https://fakeimg.pl/600x400/a65858/543939?text=${spcount}` // required
-    });
+// var boardButtonCallback = function (t) {
+//   return t.popup({
+//     title: 'Popup List',
+//     items: [
+//       // {
+//       //   text: 'Hello fuckers',
+//       //   callback: function (t) {
+//       //     return t.modal({
+//       //       url: './modal.html', // The URL to load for the iframe
+//       //       args: { text: 'Hello' }, // Optional args to access later with t.arg('text') on './modal.html'
+//       //       accentColor: '#F2D600', // Optional color for the modal header 
+//       //       height: 500, // Initial height for iframe; not used if fullscreen is true
+//       //       fullscreen: true, // Whether the modal should stretch to take up the whole screen
+//       //       callback: () => console.log('Goodbye.'), // optional function called if user closes modal (via `X` or escape)
+//       //       title: 'Hello, Modal!', // Optional title for modal header
+//       //       // You can add up to 3 action buttons on the modal header - max 1 on the right side.
+//       //       actions: [{
+//       //         icon: GRAY_ICON,
+//       //         url: 'https://google.com', // Opens the URL passed to it.
+//       //         alt: 'Leftmost',
+//       //         position: 'left',
+//       //       }
+//       //       , {
+//       //         icon: GRAY_ICON,
+//       //         callback: (tr) => tr.popup({ // Callback to be called when user clicks the action button.
+//       //           title: 'Settings',
+//       //           url: 'settings.html',
+//       //           height: 164,
+//       //         }),
+//       //         alt: 'Second from left',
+//       //         position: 'left',
+//       //       }, {
+//       //         icon: GRAY_ICON,
+//       //         callback: () => console.log('🏎'),
+//       //         alt: 'Right side',
+//       //         position: 'right',
+//       //       }],
+//       //     })
+//       //   }
+//       // },
+//       // {
+//       //   text: 'Hello fuckers',
+//       //   callback: function (t) {
+//       //     return t.boardBar({
+//       //       url: './board-bar.html',
+//       //       height: 200
+//       //     })
+//       //       .then(function () {
+//       //         return t.closePopup();
+//       //       });
+//       //   }
+//       // }
+//       {
+//         text: 'Hello fuckers',
+//         callback: function (t) {
+//           return t.alert({
+//             message: 'Hello fuckers! Go team mobile',
+//             duration: 6,
+//           });
+//         }
+//       }
 
-  }
+//     ]
+//   });
+// };
 
-  if (card.name.indexOf('|Recap') === 0 && !opts.attachments) {
-    await t.attach({
-      name: 'Recap image', // optional
-      url: `https://fakeimg.pl/600x400/a65858/543939?text=${spcount}` // required
-    });
 
-  }
-
-  return {
-    dynamic: function () {
-      return {
-        title: 'Total Story Points',
-        text: spcount,
-        icon: ICON,
-        color: 'green',
-        refresh: 10
-      };
-    }
-
-  }
-}
+//==================================================================================================================
 var getTotalListSPCount = async function (t, list) {
   var spcount = 0;
 
@@ -177,19 +194,37 @@ var getTotalListSPCount = async function (t, list) {
   return spcount
 }
 
+
+var getTotalListSPCountBadge = async function (t, opts) {
+  var list = await t.list('all');
+  var spcount = await getTotalListSPCount(t, list)
+
+  return {
+    title: 'Total Story Points',
+    text: spcount,
+    icon: ICON,
+    color: 'green'
+  };
+
+
+
+}
+
+
 var getBadges = async function (t, opts) {
 
   const card = await t.card('id', 'name')
   const id = card.id
 
-  const sp = await t.get('board', 'shared', `stati_story_point_value_${id}`);
 
-  if (card.name.indexOf('-|Recap') === 0 || card.name.indexOf('|Recap') === 0) {
+
+  if (card.name.indexOf('#') === 0) {
     return [
       await getTotalListSPCountBadge(t, opts)
     ]
   }
   else {
+    const sp = await t.get('board', 'shared', `stati_story_point_value_${id}`);
     return [
       {
         title: 'StatiStoryPoints',
@@ -201,153 +236,38 @@ var getBadges = async function (t, opts) {
   }
 
 
-  // return t.card('id')
-  //   .get('id')
-  //   .then(function (id) {
-
-  //     return t.get('board', 'shared', `stati_story_point_value_${id}`)
-  //   })
-  //   .then(function (val) {
-  //     console.log('loading detailed badges');
-
-  //     return [
-  //       //   {
-  //       //   // dynamic badges can have their function rerun after a set number
-  //       //   // of seconds defined by refresh. Minimum of 10 seconds.
-  //       //   dynamic: function () {
-  //       //     // we could also return a Promise that resolves to this as well if we needed to do something async first
-  //       //     return {
-  //       //       title: 'Detail Badge', // for detail badges only
-  //       //       text: 'Dynamic ' + (Math.random() * 100).toFixed(0).toString(),
-  //       //       icon: ICON, // for card front badges only
-  //       //       color: randomBadgeColor(),
-  //       //       refresh: 10 // in seconds
-  //       //     };
-  //       //   }
-  //       // }, 
-  //       {
-  //         // its best to use static badges unless you need your badges to refresh
-  //         // you can mix and match between static and dynamic
-  //         title: 'StatiStoryPoints', // for detail badges only
-  //         text: val,
-  //         icon: ICON, // for card front badges only
-  //         color: 'green'
-  //       },
-  //       await getTotalListSPCountBadge(t),
-  //       // , {
-  //       //   // card detail badges (those that appear on the back of cards)
-  //       //   // also support callback functions so that you can open for example
-  //       //   // open a popup on click
-  //       //   title: 'Popup Detail Badge', // for detail badges only
-  //       //   text: 'Popup',
-  //       //   icon: ICON, // for card front badges only
-  //       //   callback: function (context) { // function to run on click
-  //       //     return context.popup({
-  //       //       title: 'Card Detail Badge Popup',
-  //       //       url: './settings.html',
-  //       //       height: 184 // we can always resize later, but if we know the size in advance, its good to tell Trello
-  //       //     });
-  //       //   }
-  //       // }, {
-  //       //   // or for simpler use cases you can also provide a url
-  //       //   // when the user clicks on the card detail badge they will
-  //       //   // go to a new tab at that url
-  //       //   title: 'URL Detail Badge', // for detail badges only
-  //       //   text: 'URL',
-  //       //   icon: ICON, // for card front badges only
-  //       //   url: 'https://trello.com/home',
-  //       //   target: 'Trello Landing Page' // optional target for above url
-  //       // }
-  //     ];
-  //   });
 };
+//==================================================================================================================
+var getCardButtons = async function (t, opts) {
 
-var boardButtonCallback = function (t) {
-  return t.popup({
-    title: 'Popup List',
-    items: [
-      // {
-      //   text: 'Hello fuckers',
-      //   callback: function (t) {
-      //     return t.modal({
-      //       url: './modal.html', // The URL to load for the iframe
-      //       args: { text: 'Hello' }, // Optional args to access later with t.arg('text') on './modal.html'
-      //       accentColor: '#F2D600', // Optional color for the modal header 
-      //       height: 500, // Initial height for iframe; not used if fullscreen is true
-      //       fullscreen: true, // Whether the modal should stretch to take up the whole screen
-      //       callback: () => console.log('Goodbye.'), // optional function called if user closes modal (via `X` or escape)
-      //       title: 'Hello, Modal!', // Optional title for modal header
-      //       // You can add up to 3 action buttons on the modal header - max 1 on the right side.
-      //       actions: [{
-      //         icon: GRAY_ICON,
-      //         url: 'https://google.com', // Opens the URL passed to it.
-      //         alt: 'Leftmost',
-      //         position: 'left',
-      //       }
-      //       , {
-      //         icon: GRAY_ICON,
-      //         callback: (tr) => tr.popup({ // Callback to be called when user clicks the action button.
-      //           title: 'Settings',
-      //           url: 'settings.html',
-      //           height: 164,
-      //         }),
-      //         alt: 'Second from left',
-      //         position: 'left',
-      //       }, {
-      //         icon: GRAY_ICON,
-      //         callback: () => console.log('🏎'),
-      //         alt: 'Right side',
-      //         position: 'right',
-      //       }],
-      //     })
-      //   }
-      // },
-      // {
-      //   text: 'Hello fuckers',
-      //   callback: function (t) {
-      //     return t.boardBar({
-      //       url: './board-bar.html',
-      //       height: 200
-      //     })
-      //       .then(function () {
-      //         return t.closePopup();
-      //       });
-      //   }
-      // }
+  const card = await t.card('name')
+
+  if (card.name.indexOf('#') === 0) {
+    return [
       {
-        text: 'Hello fuckers',
-        callback: function (t) {
-          return t.alert({
-            message: 'Hello fuckers! Go team mobile',
-            duration: 6,
-          });
-        }
+        icon: ICON,
+        text: 'Générer une image de couverture',
+        callback: statStoryPointsTotalButtonCallback
+      }
+    ]
+  }
+  else {
+    return [
+      {
+        icon: ICON,
+        text: 'StatiStoryPoints',
+        callback: statiStoryPointsButtonCallback
       }
 
     ]
-  });
-};
-
-var cardButtonCallback = function (t, opts) {
+  }
+}
+var statiStoryPointsButtonCallback = function (t, opts) {
   var items = ['1', '2', '3', '5', '8', '13', '21', '34', '55'].map(function (fibItem) {
 
     return {
       text: fibItem,
       callback: function (t) {
-
-        // console.log('object t');
-        // console.log(t);
-        // console.log('object opts');
-        // console.log(opts);
-
-        // console.log('t.card()');
-        // console.log(t.card());
-        // console.log('t.card(name)');
-        // console.log(t.card('name'))
-        // console.log('t.card(id, name)');
-        // console.log(t.card('id', 'name'))
-        // console.log('t.card(all)');
-        // console.log(t.card('all'));
 
         t.card('id')
           .get('id')
@@ -369,9 +289,19 @@ var cardButtonCallback = function (t, opts) {
     items: items, // Trello will search client-side based on the text property of the items
 
   });
-
-
 };
+
+var statStoryPointsTotalButtonCallback = async function (t, opts) {
+  var list = await t.list('all');
+  var spcount = await getTotalListSPCount(t, list)
+
+  console.log("options");
+  console.log(opts);
+  await t.attach({
+    name: 'Recap image', // optional
+    url: `https://fakeimg.pl/300x200/30bcd1/ffffff?text=${spcount}&font=bebas&font_size=100` // required
+  });
+}
 
 // We need to call initialize to get all of our capability handles set up and registered with Trello
 TrelloPowerUp.initialize({
@@ -449,83 +379,72 @@ TrelloPowerUp.initialize({
   //   // we can let Trello know like so:
   //   // throw t.NotHandled();
   // },
-  'board-buttons': function (t, options) {
-    return [{
-      // we can either provide a button that has a callback function
-      // that callback function should probably open a popup, overlay, or boardBar
-      icon: ICON,
-      text: 'StatiStoryPoints',
-      callback: boardButtonCallback
-    }, {
-      // or we can also have a button that is just a simple url
-      // clicking it will open a new tab at the provided url
-      icon: ICON,
-      text: 'URL',
-      url: 'https://trello.com/inspiration',
-      target: 'Inspiring Boards' // optional target for above url
-    }];
-  },
+  // 'board-buttons': function (t, options) {
+  //   return [{
+  //     // we can either provide a button that has a callback function
+  //     // that callback function should probably open a popup, overlay, or boardBar
+  //     icon: ICON,
+  //     text: 'StatiStoryPoints',
+  //     callback: boardButtonCallback
+  //   }, {
+  //     // or we can also have a button that is just a simple url
+  //     // clicking it will open a new tab at the provided url
+  //     icon: ICON,
+  //     text: 'URL',
+  //     url: 'https://trello.com/inspiration',
+  //     target: 'Inspiring Boards' // optional target for above url
+  //   }];
+  // },
   'card-badges': function (t, options) {
-    return new Promise((resolve) => {
-      getBadges(t, options).then((badges) => {
-        return resolve(badges);
-      });
-
-    });
+    return getBadges(t, options)
   },
   'card-buttons': function (t, options) {
-    return [{
-      // usually you will provide a callback function to be run on button click
-      // we recommend that you use a popup on click generally
-      icon: ICON, // don't use a colored icon here
-      text: 'StatiStoryPoints',
-      callback: cardButtonCallback
-    }];
+    return getCardButtons(t, options)
   },
   'card-detail-badges': function (t, options) {
     return getBadges(t, options)
   },
-  'card-from-url': function (t, options) {
-    // options.url has the url in question
-    // if we know cool things about that url we can give Trello a name and desc
-    // to use when creating a card. Trello will also automatically add that url
-    // as an attachment to the created card
-    // As always you can return a Promise that resolves to the card details
+  // 'card-from-url': function (t, options) {
+  //   // options.url has the url in question
+  //   // if we know cool things about that url we can give Trello a name and desc
+  //   // to use when creating a card. Trello will also automatically add that url
+  //   // as an attachment to the created card
+  //   // As always you can return a Promise that resolves to the card details
 
-    return new Promise(function (resolve) {
-      resolve({
-        name: '💻 ' + options.url + ' 🤔',
-        desc: 'This Power-Up knows cool things about the attached url'
-      });
-    });
+  //   return new Promise(function (resolve) {
+  //     resolve({
+  //       name: '💻 ' + options.url + ' 🤔',
+  //       desc: 'This Power-Up knows cool things about the attached url'
+  //     });
+  //   });
 
-    // if we don't actually have any valuable information about the url
-    // we can let Trello know like so:
-    // throw t.NotHandled();
-  },
-  'format-url': function (t, options) {
-    // options.url has the url that we are being asked to format
-    // in our response we can include an icon as well as the replacement text
+  //   // if we don't actually have any valuable information about the url
+  //   // we can let Trello know like so:
+  //   // throw t.NotHandled();
+  // },
+  // 'format-url': function (t, options) {
+  //   // options.url has the url that we are being asked to format
+  //   // in our response we can include an icon as well as the replacement text
 
-    return {
-      icon: ICON, // don't use a colored icon here
-      text: '👉 ' + options.url + ' 👈'
-    };
+  //   return {
+  //     icon: ICON, // don't use a colored icon here
+  //     text: '👉 ' + options.url + ' 👈'
+  //   };
 
-    // if we don't actually have any valuable information about the url
-    // we can let Trello know like so:
-    // throw t.NotHandled();
-  },
-  'show-settings': function (t, options) {
-    // when a user clicks the gear icon by your Power-Up in the Power-Ups menu
-    // what should Trello show. We highly recommend the popup in this case as
-    // it is the least disruptive, and fits in well with the rest of Trello's UX
-    return t.popup({
-      title: 'Settings',
-      url: './settings.html',
-      height: 184 // we can always resize later, but if we know the size in advance, its good to tell Trello
-    });
-  },
+  //   // if we don't actually have any valuable information about the url
+  //   // we can let Trello know like so:
+  //   // throw t.NotHandled();
+  // },
+  // 'show-settings': function (t, options) {
+  //   // when a user clicks the gear icon by your Power-Up in the Power-Ups menu
+  //   // what should Trello show. We highly recommend the popup in this case as
+  //   // it is the least disruptive, and fits in well with the rest of Trello's UX
+  //   return t.popup({
+  //     title: 'Settings',
+  //     url: './settings.html',
+  //     height: 184 // we can always resize later, but if we know the size in advance, its good to tell Trello
+  //   });
+  // },
 
   /*        
       
@@ -579,19 +498,3 @@ TrelloPowerUp.initialize({
 });
 
 console.log('Loaded by: ' + document.referrer);
-(function () {
-
-  Trello.board.get().then((board) => {
-
-    const lists = board.lists
-
-    lists.forEach(async (list) => {
-
-
-      console.log(list)
-
-
-    })
-
-  })
-}())
