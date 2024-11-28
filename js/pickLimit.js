@@ -18,7 +18,7 @@ t.render(async function () {
 
 document.getElementById('save').addEventListener('click', async function () {
 
-    const list = await t.lists('id', 'name');
+    const list = await t.list('id', 'name');
     const id = list.id;
 
     await t.set('board', 'shared', `stati_story_point_limit_${id}`, statiPickLimitEntry.value);
