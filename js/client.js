@@ -194,7 +194,7 @@ var getTotalListSPCount = async function (t, list) {
   return spcount
 }
 
-var getListSPLimit = async function (list) {
+var getListSPLimit = async function (t, list) {
   const limit = await t.get('board', 'shared', `stati_story_point_value_${list.id}`);
   limitInt = parseInt(limit)
 
@@ -205,7 +205,7 @@ var getListSPLimit = async function (list) {
 var getTotalListSPCountBadges = async function (t, opts) {
   var list = await t.list('all');
   var spcount = await getTotalListSPCount(t, list)
-  var spLimit = await getListSPLimit(list)
+  var spLimit = await getListSPLimit(t, list)
 
   var spColor = 'green'
   if (spcount > spLimit) spColor = 'red'
