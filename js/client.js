@@ -303,6 +303,29 @@ var statStoryPointsTotalButtonCallback = async function (t, opts) {
     url: `https://fakeimg.pl/300x100/30bcd1/ffffff?text=${spcount}&font=bebas&font_size=80` // required
   });
 }
+//==================================================================================================================
+
+var getListActions = async function (t) {
+
+  const list = await t.list('name', 'id');
+  return [
+    {
+      text: "Définir une limite pour cette liste",
+      callback: listLimitCallback
+    }
+  ];
+
+}
+
+var listLimitCallback = async function (t) {
+
+  t.popup({
+    title: 'Choisir',
+    url: './picklimit.html',
+    height: 184
+  });
+
+}
 
 // We need to call initialize to get all of our capability handles set up and registered with Trello
 TrelloPowerUp.initialize({
@@ -404,6 +427,9 @@ TrelloPowerUp.initialize({
   },
   'card-detail-badges': function (t, options) {
     return getBadges(t, options)
+  },
+  'list-actions': function (t) {
+    return getListActions(t)
   },
   // 'card-from-url': function (t, options) {
   //   // options.url has the url in question
