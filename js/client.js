@@ -195,7 +195,7 @@ var getTotalListSPCount = async function (t, list) {
 }
 
 var getListSPLimit = async function (t, list) {
-  const limit = await t.get('board', 'shared', `stati_story_point_value_${list.id}`);
+  const limit = await t.get('board', 'shared', `stati_story_point_limit_${list.id}`);
   limitInt = parseInt(limit)
 
   if (limitInt > 0) return limitInt;
@@ -222,7 +222,7 @@ var getTotalListSPCountBadges = async function (t, opts) {
       title: 'Limite',
       text: `Limite : ${spLimit}`,
       icon: ICON,
-      color: 'violette'
+      color: 'magenta'
     }
   ];
 
