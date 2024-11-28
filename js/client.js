@@ -194,17 +194,37 @@ var getTotalListSPCount = async function (t, list) {
   return spcount
 }
 
+var getListSPLimit = async function (list) {
+  const limit = await t.get('board', 'shared', `stati_story_point_value_${list.id}`);
+  limitInt = parseInt(limit)
 
-var getTotalListSPCountBadge = async function (t, opts) {
+  if (limitInt > 0) return limitInt;
+  else return 0;
+}
+
+var getTotalListSPCountBadges = async function (t, opts) {
   var list = await t.list('all');
   var spcount = await getTotalListSPCount(t, list)
+  var spLimit = await getListSPLimit(list)
 
-  return {
-    title: 'Total Story Points',
-    text: `Total : ${spcount}`,
-    icon: ICON,
-    color: 'green'
-  };
+  var spColor = 'green'
+  if (spcount > spLimit) spColor = 'red'
+  else if (spcount === spLimit) spColor = 'yellow'
+
+  return [
+    {
+      title: 'Total Story Points',
+      text: `Total : ${spcount}`,
+      icon: ICON,
+      color: spColor
+    },
+    {
+      title: 'Limite',
+      text: `Limite : ${spLimit}`,
+      icon: ICON,
+      color: 'violette'
+    }
+  ];
 
 
 
@@ -219,9 +239,7 @@ var getBadges = async function (t, opts) {
 
 
   if (card.name.indexOf('#') === 0) {
-    return [
-      await getTotalListSPCountBadge(t, opts)
-    ]
+    return await getTotalListSPCountBadges(t, opts)
   }
   else {
     const sp = await t.get('board', 'shared', `stati_story_point_value_${id}`);
