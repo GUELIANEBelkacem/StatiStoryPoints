@@ -195,9 +195,14 @@ var getTotalListSPCount = async function (t, list) {
 }
 
 var getListSPLimit = async function (t, list) {
-  const limit = await t.get('board', 'shared', `stati_story_point_limit_${list.id}`);
+  const id = list.id;
+  const limit = await t.get('board', 'shared', `stati_story_point_limit_${id}`);
+
+  console.log(`limit for ${list.name} is ${limit}`)
+
   limitInt = parseInt(limit)
 
+  console.log(`limitInt for ${list.name} after parsing is ${limitInt}`)
   if (limitInt > 0) return limitInt;
   else return 0;
 }
@@ -206,6 +211,9 @@ var getTotalListSPCountBadges = async function (t, opts) {
   var list = await t.list('all');
   var spcount = await getTotalListSPCount(t, list)
   var spLimit = await getListSPLimit(t, list)
+
+  console.log(`spcount for ${list.name} is ${spcount}`)
+  console.log(`spLimit for ${list.name} is ${spLimit}`)
 
   var spColor = 'green'
   if (spcount > spLimit) spColor = 'red'
@@ -222,7 +230,7 @@ var getTotalListSPCountBadges = async function (t, opts) {
       title: 'Limite',
       text: `Limite : ${spLimit}`,
       icon: ICON,
-      color: 'magenta'
+      color: 'yellow'
     }
   ];
 
