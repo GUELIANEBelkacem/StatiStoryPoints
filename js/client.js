@@ -215,10 +215,15 @@ var getTotalListSPCountBadges = async function (t, opts) {
 
   return [
     {
-      title: 'Total Story Points',
-      text: `Total : ${spcount}`,
-      icon: ICON,
-      color: spColor
+      dynamic: function(){
+        return {
+          title: 'Total Story Points',
+          text: `Total : ${spcount}`,
+          icon: ICON,
+          color: spColor,
+          refresh: 10,
+        };
+      },
     },
     {
       title: 'Limite',
