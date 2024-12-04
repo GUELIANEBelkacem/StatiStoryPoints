@@ -250,6 +250,13 @@ var getBadges = async function (t, opts) {
   }
   else {
     const sp = await t.get('board', 'shared', `stati_story_point_value_${id}`);
+    
+    const blabla = await t.get('board', 'shared', 'blablabla_value');
+    valBla = parseInt(blabla)
+    if (valBla > 0) valBla += 1;
+    else valBla = 0;
+    await t.set('board', 'shared', 'blablabla_value', valBla);
+    
     if (!sp || sp < 1) return []
     return [
       {
