@@ -284,7 +284,7 @@ var getCardButtons = async function (t, opts) {
   }
 }
 var statiStoryPointsButtonCallback = function (t, opts) {
-  var items = ['1', '2', '3', '5', '8', '13', '21', '34', '55'].map(function (fibItem) {
+  var items = ['0', '1', '2', '3', '5', '8', '13', '21', '34', '55', '89'].map(function (fibItem) {
 
     return {
       text: fibItem,
