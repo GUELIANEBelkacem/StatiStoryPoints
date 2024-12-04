@@ -246,14 +246,15 @@ var getBadges = async function (t, opts) {
     return await getTotalListSPCountBadges(t, opts)
   }
   else {
+    var list = await t.list('all');
+    var spcount = await getTotalListSPCount(t, list);
+    const id = list.id
+    
+    var trueSpCount = await t.get('board', 'shared', `stati_story_point_total_value_${list.id}`);
+    valInt = parseInt(trueSpCount)
+    if(valInt !== spcount) await t.set('board', 'shared', `stati_story_point_total_value_${list.id}`, spcount);
+
     const sp = await t.get('board', 'shared', `stati_story_point_value_${id}`);
-    
-    const blabla = await t.get('board', 'shared', 'blablabla_value');
-    valBla = parseInt(blabla)
-    if (valBla > 0) valBla += 1;
-    else valBla = 0;
-    await t.set('board', 'shared', 'blablabla_value', valBla);
-    
     if (!sp || sp < 1) return []
     return [
       {
