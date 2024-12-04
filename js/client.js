@@ -208,15 +208,17 @@ var getTotalListSPCountBadges = async function (t, opts) {
   var spcount = await getTotalListSPCount(t, list)
   var spLimit = await getListSPLimit(t, list)
 
-
+  const id = list.id
+  await t.set('board', 'shared', `stati_story_point_total_value_${list.id}`, spcount);
   var spColor = 'green'
   if (spcount > spLimit) spColor = 'red'
   else if (spcount === spLimit) spColor = 'yellow'
 
+  var trueSpCount = t.get('board', 'shared', `stati_story_point_total_value_${list.id}`);
   return [
     {
       title: 'Total Story Points',
-      text: `Total : ${spcount}`,
+      text: `Total : ${trueSpCount}`,
       icon: ICON,
       color: spColor,
     },
