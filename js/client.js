@@ -218,7 +218,7 @@ var getTotalListSPCountBadges = async function (t, opts) {
   return [
     {
       title: 'Total Story Points',
-      text: `Totalsss : ${spcount}`,
+      text: `Totals : ${spcount}`,
       icon: ICON,
       color: spColor,
     },
@@ -240,15 +240,17 @@ var getBadges = async function (t, opts) {
   const card = await t.card('id', 'name')
   const id = card.id
 
+  console.log('making a choice');
 
 
   if (card.name.indexOf('#') === 0) {
+    console.log('choosing total');
     return await getTotalListSPCountBadges(t, opts)
   }
   else {
     var list = await t.list('all');
-    const id = list.id
-    
+    //const id = list.id
+    console.log('choosing 1 card');
     //var spcount = await getTotalListSPCount(t, list);
     //var trueSpCount = await t.get('board', 'shared', `stati_story_point_total_value_${list.id}`);
     //valInt = parseInt(trueSpCount)
@@ -256,6 +258,7 @@ var getBadges = async function (t, opts) {
 
     //await t.set('board', 'shared', `stati_story_point_total_value_${list.id}`, '334');
     const sp = await t.get('board', 'shared', `stati_story_point_value_${id}`);
+    console.log('the card id and sp');
     if (!sp || sp < 1) return []
     return [
       {
