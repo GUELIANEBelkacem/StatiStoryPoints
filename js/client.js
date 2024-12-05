@@ -74,7 +74,7 @@ Or want all in scope data at once?
 
 t.getAll();
 
-*/
+*/ 
  
 var ICON = './images/ic_story_point.png';
 
