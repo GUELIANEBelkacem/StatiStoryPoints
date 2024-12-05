@@ -221,7 +221,7 @@ var getTotalListSPCountBadges = async function (t, opts) {
   return [
     {
       title: 'Total Story Points',
-      text: `Totals : ${trueSpCount}`,
+      text: `Total : ${trueSpCount}`,
       icon: ICON,
       color: spColor,
     },
