@@ -205,16 +205,19 @@ var getListSPLimit = async function (t, list) {
 
 var getTotalListSPCountBadges = async function (t, opts) {
   var list = await t.list('all');
-  var spcount = await getTotalListSPCount(t, list)
+  //var spcount = await getTotalListSPCount(t, list)
   var spLimit = await getListSPLimit(t, list)
 
-  const id = list.id
-  await t.set('board', 'shared', `stati_story_point_total_value_${list.id}`, spcount);
-  var spColor = 'green'
-  if (spcount > spLimit) spColor = 'red'
-  else if (spcount === spLimit) spColor = 'yellow'
+  // const id = list.id
+  // await t.set('board', 'shared', `stati_story_point_total_value_${list.id}`, spcount);
+  // var spColor = 'green'
+  // if (spcount > spLimit) spColor = 'red'
+  // else if (spcount === spLimit) spColor = 'yellow'
 
   var trueSpCount = await t.get('board', 'shared', `stati_story_point_total_value_${list.id}`);
+  var spColor = 'green'
+  if (trueSpCount  > spLimit) spColor = 'red'
+  else if (trueSpCount  === spLimit) spColor = 'yellow'
   return [
     {
       title: 'Total Story Points',
@@ -251,10 +254,11 @@ var getBadges = async function (t, opts) {
     var list = await t.list('all');
     //const id = list.id
     console.log('choosing 1 card');
-    //var spcount = await getTotalListSPCount(t, list);
-    //var trueSpCount = await t.get('board', 'shared', `stati_story_point_total_value_${list.id}`);
-    //valInt = parseInt(trueSpCount)
-    //if(valInt !== spcount) await t.set('board', 'shared', `stati_story_point_total_value_${list.id}`, spcount);
+
+    var spcount = await getTotalListSPCount(t, list);
+    var trueSpCount = await t.get('board', 'shared', `stati_story_point_total_value_${list.id}`);
+    valInt = parseInt(trueSpCount)
+    if(valInt !== spcount) await t.set('board', 'shared', `stati_story_point_total_value_${list.id}`, spcount);
 
     //await t.set('board', 'shared', `stati_story_point_total_value_${list.id}`, '334');
     const sp = await t.get('board', 'shared', `stati_story_point_value_${id}`);
