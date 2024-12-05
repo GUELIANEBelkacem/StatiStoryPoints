@@ -254,7 +254,7 @@ var getBadges = async function (t, opts) {
     //valInt = parseInt(trueSpCount)
     //if(valInt !== spcount) await t.set('board', 'shared', `stati_story_point_total_value_${list.id}`, spcount);
 
-    await t.set('board', 'shared', `stati_story_point_total_value_${list.id}`, '334');
+    //await t.set('board', 'shared', `stati_story_point_total_value_${list.id}`, '334');
     const sp = await t.get('board', 'shared', `stati_story_point_value_${id}`);
     if (!sp || sp < 1) return []
     return [
