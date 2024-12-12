@@ -271,9 +271,7 @@ var getColorForSP_Zero = function (sp) {
 
 var getTotalListSPCountBadges = async function (t, opts) {
 
-  var allstuff = await t.getAll();
-  console.log('all the data')
-  console.log(allstuff)
+  
   
   var list = await t.list('all');
   var spLimit = await getListSPLimit(t, list)
@@ -432,6 +430,10 @@ var getBadges = async function (t, opts) {
 //==================================================================================================================
 var getCardButtons = async function (t, opts) {
 
+  var allstuff = await t.getAll();
+  console.log('all the data')
+  console.log(allstuff)
+  
   const card = await t.card('name')
 
   if (card.name.indexOf('#') === 0) {
