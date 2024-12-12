@@ -382,15 +382,15 @@ var getBadges = async function (t, opts) {
   const card = await t.card('id', 'name')
   const id = card.id
 
-  console.log('making a choice');
+
 
 
   if (card.name.indexOf('#') === 0) {
-    console.log('choosing total');
+
     return await getTotalListSPCountBadges(t, opts)
   }
   else {
-    console.log('choosing normal');
+
     return await getNormalBadges(t, opts)
   }
 
@@ -454,8 +454,8 @@ var statStoryPointsTotalButtonCallback = async function (t, opts) {
   var list = await t.list('all');
   var spcount = await getTotalListSPCount(t, list)
 
-  console.log("options");
-  console.log(opts);
+
+
   await t.attach({
     name: 'Recap image', // optional
     url: `https://fakeimg.pl/300x100/30bcd1/ffffff?text=${spcount.total}&font=bebas&font_size=80` // required
