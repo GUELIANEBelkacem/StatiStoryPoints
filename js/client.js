@@ -248,11 +248,6 @@ var getTotalListSPCountBadges = async function (t, opts) {
   var savedEvo = await t.get('board', 'shared', `stati_story_point_total_value_evo_${list.id}`);
   var evoColor = getColorForSP(savedEvo, spLimit)
 
-  console.log('the count from getTotalListSPCountBadges');
-  console.log(savedTotal);
-  console.log(savedDev);
-  console.log(savedEvo);
-
   var res = [];
   if (spLimit > 0) res.push({
     title: 'Limite',
@@ -286,8 +281,6 @@ var updateTotals = async function (t) {
 
   var spcount = await getTotalListSPCount(t, list);
 
-  console.log('the count from updateToals');
-  console.log(spcount);
 
   var savedTotalSP = await t.get('board', 'shared', `stati_story_point_total_value_${list.id}`);
   var savedDevSP = await t.get('board', 'shared', `stati_story_point_total_value_dev_${list.id}`);
@@ -321,6 +314,14 @@ var getNormalBadges = async function (t, opts) {
     typeColor = 'blue';
   }
 
+  console.log('badge text');
+  console.log(spText);
+  console.log(typeText);
+
+  console.log('badge color');
+  console.log(spColor);
+  console.log(typeColor);
+
   return [
     {
       title: 'StatiStoryPoints',
@@ -329,7 +330,7 @@ var getNormalBadges = async function (t, opts) {
       spColor: spColor
     },
     {
-      title: 'Type',
+      title: 'Card type',
       spText: typeText,
       icon: ICON,
       spColor: typeColor
