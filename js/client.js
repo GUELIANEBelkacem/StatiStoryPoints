@@ -201,20 +201,20 @@ var getTotalListSPCount = async function (t, list) {
 
   for (const card of cards) {
     var cardID = card.id
-    //transition
-    var boardVal = await t.get('board', 'shared', `stati_story_point_value_${cardID}`)
-    if(boardVal)
-    {
-      await t.set(cardID, 'shared', `stati_story_point_value_${cardID}`, boardVal)
-      await t.remove('board', 'shared', `stati_story_point_value_${cardID}`)
-    }
-    var boardType = await t.get('board', 'shared', `stati_story_point_card_type_${cardID}`)
-    if(boardType)
-    {
-      await t.set(cardID, 'shared', `stati_story_point_card_type_${cardID}`, boardType)
-      await t.remove('board', 'shared', `stati_story_point_card_type_${cardID}`)
-    }
-    //fin transition
+    // //transition
+    // var boardVal = await t.get('board', 'shared', `stati_story_point_value_${cardID}`)
+    // if(boardVal)
+    // {
+    //   await t.set(cardID, 'shared', `stati_story_point_value_${cardID}`, boardVal)
+    //   await t.remove('board', 'shared', `stati_story_point_value_${cardID}`)
+    // }
+    // var boardType = await t.get('board', 'shared', `stati_story_point_card_type_${cardID}`)
+    // if(boardType)
+    // {
+    //   await t.set(cardID, 'shared', `stati_story_point_card_type_${cardID}`, boardType)
+    //   await t.remove('board', 'shared', `stati_story_point_card_type_${cardID}`)
+    // }
+    // //fin transition
     var val = await t.get(cardID, 'shared', `stati_story_point_value_${cardID}`)
     var cardType = await t.get(cardID, 'shared', `stati_story_point_card_type_${cardID}`)
     if (!cardType) cardType = 'dev'
@@ -357,20 +357,20 @@ var getNormalBadges = async function (t, opts) {
   const card = await t.card('id', 'name')
   const id = card.id
 
-  //transition
-  var boardVal = await t.get('board', 'shared', `stati_story_point_value_${id}`)
-  if(boardVal)
-  {
-    await t.set(id, 'shared', `stati_story_point_value_${id}`, boardVal)
-    await t.remove('board', 'shared', `stati_story_point_value_${id}`)
-  }
-  var boardType = await t.get('board', 'shared', `stati_story_point_card_type_${id}`)
-  if(boardType)
-  {
-    await t.set(id, 'shared', `stati_story_point_card_type_${id}`, boardType)
-    await t.remove('board', 'shared', `stati_story_point_card_type_${id}`)
-  }
-  //fin transition
+  // //transition
+  // var boardVal = await t.get('board', 'shared', `stati_story_point_value_${id}`)
+  // if(boardVal)
+  // {
+  //   await t.set(id, 'shared', `stati_story_point_value_${id}`, boardVal)
+  //   await t.remove('board', 'shared', `stati_story_point_value_${id}`)
+  // }
+  // var boardType = await t.get('board', 'shared', `stati_story_point_card_type_${id}`)
+  // if(boardType)
+  // {
+  //   await t.set(id, 'shared', `stati_story_point_card_type_${id}`, boardType)
+  //   await t.remove('board', 'shared', `stati_story_point_card_type_${id}`)
+  // }
+  // //fin transition
 
   const sp = await t.get(id, 'shared', `stati_story_point_value_${id}`);
   var spText = sp;
