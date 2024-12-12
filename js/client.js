@@ -314,26 +314,19 @@ var getNormalBadges = async function (t, opts) {
     typeColor = 'blue';
   }
 
-  console.log('badge text');
-  console.log(spText);
-  console.log(typeText);
-
-  console.log('badge color');
-  console.log(spColor);
-  console.log(typeColor);
 
   return [
     {
       title: 'StatiStoryPoints',
-      spText: spText,
+      text: spText,
       icon: ICON,
-      spColor: spColor
+      color: spColor
     },
     {
-      title: 'Card type',
-      spText: typeText,
+      title: 'Type',
+      text: typeText,
       icon: ICON,
-      spColor: typeColor
+      color: typeColor
     }
   ]
 }
