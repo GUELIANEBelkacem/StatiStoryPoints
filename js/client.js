@@ -227,10 +227,18 @@ var getTotalListSPCount = async function (t, list) {
 var getListSPLimit = async function (t, list) {
   const id = list.id;
   const limit = await t.get('board', 'shared', `stati_story_point_limit_${id}`);
+  const limitEvo = await t.get('board', 'shared', `stati_story_point_limit_evo_${id}`);
 
-  limitInt = parseInt(limit)
-  if (limitInt > 0) return limitInt;
-  else return 0;
+  var limitInt = parseInt(limit)
+  if (!limitInt) limitInt = 0
+
+  var limitEvoInt = parseInt(limitEvo)
+  if (!limitEvoInt) limitEvoInt = 0
+
+  return {
+    total: limitInt,
+    evo: limitEvoInt
+  }
 }
 var getColorForSP = function (sp, limit) {
   if (!limit || limit < 1) return 'green'
@@ -252,40 +260,53 @@ var getTotalListSPCountBadges = async function (t, opts) {
   var list = await t.list('all');
   var spLimit = await getListSPLimit(t, list)
 
+  var limitTotal = spLimit.total
+  var limitEvo = spLimit.evo
+  var limitDev = limitTotal - limitEvo
+
   var savedTotal = await t.get('board', 'shared', `stati_story_point_total_value_${list.id}`);
-  var spColor = getColorForSP(savedTotal, spLimit)
+  var spColor = getColorForSP(savedTotal, limitTotal)
 
   var savedDev = await t.get('board', 'shared', `stati_story_point_total_value_dev_${list.id}`);
-  var devColor = getColorForSP(savedDev, spLimit)
+  var devColor = getColorForSP(savedDev, limitDev)
 
   var savedEvo = await t.get('board', 'shared', `stati_story_point_total_value_evo_${list.id}`);
-  var evoColor = getColorForSP(savedEvo, spLimit)
+  var evoColor = getColorForSP(savedEvo, slimitEvo)
 
   var savedBlank = await t.get('board', 'shared', `stati_story_point_total_value_blank_${list.id}`);
   var blankColor = getColorForSP_Zero(savedBlank)
 
+  var totalText = `Total : ${savedTotal}`
+  if (limitTotal > 0) totalText = `${totalText} / ${limitTotal}`
+
+  var devText = `Total - DEV : ${savedDev}`
+  if (limitDev > 0) devText = `${devText} / ${limitDev}`
+
+  var evoText = `Total - Évolution: ${savedEvo}`
+  if (limitEvo > 0) evoText = `${evoText} / ${limitEvo}`
+
   var res = [];
-  if (spLimit > 0) res.push({
-    title: 'Limite',
-    text: `Limite : ${spLimit}`,
-    icon: ICON,
-    color: 'yellow'
-  });
+  // if (spLimit > 0) res.push({
+  //   title: 'Limite',
+  //   text: `Limite : ${spLimit}`,
+  //   icon: ICON,
+  //   color: 'yellow'
+  // });
   res.push({
     title: 'Total Story Points',
-    text: `Total : ${savedTotal}`,
+    text: totalText,
     icon: ICON,
     color: spColor,
   });
   if (savedDev > 0) res.push({
     title: 'Total Story Points - DEV',
-    text: `Total - DEV : ${savedDev}`,
+    text: devText,
     icon: ICON,
     color: devColor,
   });
   if (savedEvo > 0) res.push({
     title: 'Total Story Points - Évolution',
-    text: `Total - Évolution: ${savedEvo}`,
+    text: evoText,
     icon: ICON,
     color: evoColor,
   });
