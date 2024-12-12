@@ -251,7 +251,7 @@ var getColorForSP = function (sp, limit) {
 var getColorForSP_Zero = function (sp) {
 
   val = parseInt(sp)
-  if (val > 0) return 'red'
+  if (val > 0) return 'pink'
   else return 'green'
 }
 
@@ -279,10 +279,10 @@ var getTotalListSPCountBadges = async function (t, opts) {
   var totalText = `Total : ${savedTotal}`
   if (limitTotal > 0) totalText = `${totalText} / ${limitTotal}`
 
-  var devText = `Total - DEV : ${savedDev}`
+  var devText = `DEV : ${savedDev}`
   if (limitDev > 0) devText = `${devText} / ${limitDev}`
 
-  var evoText = `Total - Évolution: ${savedEvo}`
+  var evoText = `Évolution: ${savedEvo}`
   if (limitEvo > 0) evoText = `${evoText} / ${limitEvo}`
 
   var res = [];
