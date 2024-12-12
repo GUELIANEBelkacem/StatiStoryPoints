@@ -228,6 +228,7 @@ var getListSPLimit = async function (t, list) {
   else return 0;
 }
 var getColorForSP = function (sp, limit) {
+  if (!limit || limit < 1) return 'green'
   val = parseInt(sp)
   if (val > limit) return 'red'
   else if (val === limit) return 'yellow'
@@ -255,7 +256,7 @@ var getTotalListSPCountBadges = async function (t, opts) {
     icon: ICON,
     color: 'yellow'
   });
-  if (savedTotal > 0) res.push({
+  res.push({
     title: 'Total Story Points',
     text: `Total : ${savedTotal}`,
     icon: ICON,
