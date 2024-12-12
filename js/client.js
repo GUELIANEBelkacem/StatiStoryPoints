@@ -298,7 +298,7 @@ var getTotalListSPCountBadges = async function (t, opts) {
     icon: ICON,
     color: spColor,
   });
-  if (savedDev > 0) res.push({
+  if (savedDev > 0 && savedEvo > 0) res.push({
     title: 'Total Story Points - DEV',
     text: devText,
     icon: ICON,
