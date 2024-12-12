@@ -271,7 +271,7 @@ var getTotalListSPCountBadges = async function (t, opts) {
   var devColor = getColorForSP(savedDev, limitDev)
 
   var savedEvo = await t.get('board', 'shared', `stati_story_point_total_value_evo_${list.id}`);
-  var evoColor = getColorForSP(savedEvo, slimitEvo)
+  var evoColor = getColorForSP(savedEvo, limitEvo)
 
   var savedBlank = await t.get('board', 'shared', `stati_story_point_total_value_blank_${list.id}`);
   var blankColor = getColorForSP_Zero(savedBlank)
