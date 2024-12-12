@@ -175,7 +175,20 @@ var ICON = './images/ic_story_point.png';
 //     ]
 //   });
 // };
-
+//==================================================================================================================
+var getCardBackSection = async function (t, opts) {
+  return {
+    title: 'StatiStoryPoints',
+    icon: ICON,
+    content: {
+      type: 'iframe',
+      url: t.signUrl('./pickCardType.html'),
+      height: 230,
+    },
+    action: {
+    }
+  };
+}
 
 //==================================================================================================================
 var getTotalListSPCount = async function (t, list) {
