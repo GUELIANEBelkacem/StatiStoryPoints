@@ -246,6 +246,11 @@ var getTotalListSPCountBadges = async function (t, opts) {
   var savedEvo = await t.get('board', 'shared', `stati_story_point_total_value_evo_${list.id}`);
   var evoColor = getColorForSP(savedEvo, spLimit)
 
+  console.log('the count from getTotalListSPCountBadges');
+  console.log(savedTotal);
+  console.log(savedDev);
+  console.log(savedEvo);
+
   var res = [];
   if (spLimit > 0) res.push({
     title: 'Limite',
@@ -278,6 +283,9 @@ var updateTotals = async function (t) {
   var list = await t.list('all');
 
   var spcount = await getTotalListSPCount(t, list);
+
+  console.log('the count from updateToals');
+  console.log(spcount);
 
   var savedTotalSP = await t.get('board', 'shared', `stati_story_point_total_value_${list.id}`);
   var savedDevSP = await t.get('board', 'shared', `stati_story_point_total_value_dev_${list.id}`);
