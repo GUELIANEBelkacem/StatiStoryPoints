@@ -214,6 +214,8 @@ var getTotalListSPCount = async function (t, list) {
     else number_blank_cards = number_blank_cards + 1
   }
 
+  if (number_blank_cards > 0) number_blank_cards = number_blank_cards - 1 //la carte total
+
   return {
     total: spcount,
     dev: spcount_dev,
