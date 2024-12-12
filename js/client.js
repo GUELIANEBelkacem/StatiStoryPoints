@@ -195,6 +195,7 @@ var getTotalListSPCount = async function (t, list) {
   var spcount = 0;
   var spcount_dev = 0;
   var spcount_evo = 0;
+  var number_blank_cards = 0;
 
   var cards = list.cards;
 
@@ -210,12 +211,14 @@ var getTotalListSPCount = async function (t, list) {
       if (cardType === 'evo') spcount_evo += valInt
       else spcount_dev += valInt
     }
+    else number_blank_cards = number_blank_cards + 1
   }
 
   return {
     total: spcount,
     dev: spcount_dev,
-    evo: spcount_evo
+    evo: spcount_evo,
+    blank: number_blank_cards
   }
 }
 
@@ -235,6 +238,13 @@ var getColorForSP = function (sp, limit) {
   else return 'green'
 }
 
+var getColorForSP_Zero = function (sp) {
+
+  val = parseInt(sp)
+  if (val > 0) return 'red'
+  else return 'green'
+}
+
 var getTotalListSPCountBadges = async function (t, opts) {
 
   var list = await t.list('all');
@@ -248,6 +258,9 @@ var getTotalListSPCountBadges = async function (t, opts) {
 
   var savedEvo = await t.get('board', 'shared', `stati_story_point_total_value_evo_${list.id}`);
   var evoColor = getColorForSP(savedEvo, spLimit)
+
+  var savedBlank = await t.get('board', 'shared', `stati_story_point_total_value_blank_${list.id}`);
+  var blankColor = getColorForSP_Zero(savedBlank)
 
   var res = [];
   if (spLimit > 0) res.push({
@@ -274,6 +287,12 @@ var getTotalListSPCountBadges = async function (t, opts) {
     icon: ICON,
     color: evoColor,
   });
+  if (savedBlank > 0) res.push({
+    title: 'Total Story Points - Non évaluées',
+    text: `Non évaluée: ${savedBlank}`,
+    icon: ICON,
+    color: blankColor,
+  });
   return res;
 }
 
@@ -286,11 +305,13 @@ var updateTotals = async function (t) {
   var savedTotalSP = await t.get('board', 'shared', `stati_story_point_total_value_${list.id}`);
   var savedDevSP = await t.get('board', 'shared', `stati_story_point_total_value_dev_${list.id}`);
   var savedEvoSP = await t.get('board', 'shared', `stati_story_point_total_value_evo_${list.id}`);
+  var savedBlank = await t.get('board', 'shared', `stati_story_point_total_value_blank_${list.id}`);
 
 
   if (savedTotalSP !== spcount.total) await t.set('board', 'shared', `stati_story_point_total_value_${list.id}`, spcount.total);
   if (savedDevSP !== spcount.dev) await t.set('board', 'shared', `stati_story_point_total_value_dev_${list.id}`, spcount.dev);
   if (savedEvoSP !== spcount.evo) await t.set('board', 'shared', `stati_story_point_total_value_evo_${list.id}`, spcount.evo);
+  if (savedBlank !== spcount.blank) await t.set('board', 'shared', `stati_story_point_total_value_blank_${list.id}`, spcount.blank);
 }
 var getNormalBadges = async function (t, opts) {
 
