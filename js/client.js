@@ -205,9 +205,11 @@ var getTotalListSPCount = async function (t, list) {
     if (!cardType) cardType = 'dev'
 
     valInt = parseInt(val)
-    if (valInt > 0) spcount += valInt
-    if (cardType === 'evo') spcount_evo += valInt
-    else spcount_dev += valInt
+    if (valInt > 0) {
+      spcount += valInt
+      if (cardType === 'evo') spcount_evo += valInt
+      else spcount_dev += valInt
+    }
   }
 
   return {
