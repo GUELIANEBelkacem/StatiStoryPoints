@@ -283,13 +283,10 @@ var updateTotals = async function (t) {
   var savedDevSP = await t.get('board', 'shared', `stati_story_point_total_value_dev_${list.id}`);
   var savedEvoSP = await t.get('board', 'shared', `stati_story_point_total_value_evo_${list.id}`);
 
-  var savedTotal = parseInt(savedTotalSP)
-  var savedDev = parseInt(savedDevSP)
-  var savedEvo = parseInt(savedEvoSP)
 
-  if (savedTotal !== spcount.total) await t.set('board', 'shared', `stati_story_point_total_value_${list.id}`, spcount.total);
-  if (savedDev !== spcount.dev) await t.set('board', 'shared', `stati_story_point_total_value_dev_${list.id}`, spcount.dev);
-  if (savedEvo !== spcount.evo) await t.set('board', 'shared', `stati_story_point_total_value_evo_${list.id}`, spcount.evo);
+  if (savedTotalSP !== spcount.total) await t.set('board', 'shared', `stati_story_point_total_value_${list.id}`, spcount.total);
+  if (savedDevSP !== spcount.dev) await t.set('board', 'shared', `stati_story_point_total_value_dev_${list.id}`, spcount.dev);
+  if (savedEvoSP !== spcount.evo) await t.set('board', 'shared', `stati_story_point_total_value_evo_${list.id}`, spcount.evo);
 }
 var getNormalBadges = async function (t, opts) {
 
