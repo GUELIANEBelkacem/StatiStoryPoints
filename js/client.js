@@ -292,7 +292,7 @@ var getNormalBadges = async function (t, opts) {
 
   await updateTotals(t);
 
-  const card = await t.card('id, name')
+  const card = await t.card('id', 'name')
   const id = card.id
 
   const sp = await t.get('board', 'shared', `stati_story_point_value_${id}`);
