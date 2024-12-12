@@ -271,9 +271,9 @@ var getColorForSP_Zero = function (sp) {
 
 var getTotalListSPCountBadges = async function (t, opts) {
 
-  var allstuff = await t.getAll();
-  console.log('all the data')
-  console.log(allstuff)
+  // var allstuff = await t.getAll();
+  // console.log('all the data')
+  // console.log(allstuff)
   
   var list = await t.list('all');
   var spLimit = await getListSPLimit(t, list)
@@ -361,22 +361,22 @@ var getNormalBadges = async function (t, opts) {
   const card = await t.card('id', 'name')
   const id = card.id
 
-  //transition
-  var boardVal = await t.get('board', 'shared', `stati_story_point_value_${id}`)
-  if(boardVal)
-  {
-    console.log(`removing a value for card ${id}`);
-    //await t.set(id, 'shared', `stati_story_point_value_${id}`, boardVal)
-    await t.remove('board', 'shared', `stati_story_point_value_${id}`)
-  }
-  var boardType = await t.get('board', 'shared', `stati_story_point_card_type_${id}`)
-  if(boardType)
-  {
-    console.log(`removing a type for card ${id}`);
-    //await t.set(id, 'shared', `stati_story_point_card_type_${id}`, boardType)
-    await t.remove('board', 'shared', `stati_story_point_card_type_${id}`)
-  }
-  //fin transition
+  // //transition
+  // var boardVal = await t.get('board', 'shared', `stati_story_point_value_${id}`)
+  // if(boardVal)
+  // {
+  //   console.log(`removing a value for card ${id}`);
+  //   //await t.set(id, 'shared', `stati_story_point_value_${id}`, boardVal)
+  //   await t.remove('board', 'shared', `stati_story_point_value_${id}`)
+  // }
+  // var boardType = await t.get('board', 'shared', `stati_story_point_card_type_${id}`)
+  // if(boardType)
+  // {
+  //   console.log(`removing a type for card ${id}`);
+  //   //await t.set(id, 'shared', `stati_story_point_card_type_${id}`, boardType)
+  //   await t.remove('board', 'shared', `stati_story_point_card_type_${id}`)
+  // }
+  // //fin transition
 
   const sp = await t.get(id, 'shared', `stati_story_point_value_${id}`);
   var spText = sp;
