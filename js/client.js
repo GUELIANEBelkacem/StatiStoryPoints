@@ -280,7 +280,7 @@ var getTotalListSPCountBadges = async function (t, opts) {
   if (limitTotal > 0) totalText = `${totalText} / ${limitTotal}`
 
   var devText = `DEV : ${savedDev}`
-  if (limitDev > 0) devText = `${devText} / ${limitDev}`
+  if (limitDev > 0 && limitEvo > 0) devText = `${devText} / ${limitDev}`
 
   var evoText = `Évolution: ${savedEvo}`
   if (limitEvo > 0) evoText = `${evoText} / ${limitEvo}`
