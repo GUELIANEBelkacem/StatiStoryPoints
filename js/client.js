@@ -193,18 +193,28 @@ var getCardBackSection = async function (t, opts) {
 //==================================================================================================================
 var getTotalListSPCount = async function (t, list) {
   var spcount = 0;
+  var spcount_dev = 0;
+  var spcount_evo = 0;
 
   var cards = list.cards;
 
   for (const card of cards) {
     var cardID = card.id
     var val = await t.get('board', 'shared', `stati_story_point_value_${cardID}`)
+    var cardType = await t.get('board', 'shared', `stati_story_point_card_type_${cardID}`)
+    if (!cardType) cardType = 'dev'
 
     valInt = parseInt(val)
     if (valInt > 0) spcount += valInt
+    if (cardType === 'evo') spcount_evo += valInt
+    else spcount_dev += valInt
   }
 
-  return spcount
+  return {
+    total: spcount,
+    dev: spcount_dev,
+    evo: spcount_evo
+  }
 }
 
 var getListSPLimit = async function (t, list) {
@@ -215,39 +225,106 @@ var getListSPLimit = async function (t, list) {
   if (limitInt > 0) return limitInt;
   else return 0;
 }
+var getColorForSP = function (sp, limit) {
+  val = parseInt(sp)
+  if (val > limit) return 'red'
+  else if (val === limit) return 'yellow'
+  else return 'green'
+}
 
 var getTotalListSPCountBadges = async function (t, opts) {
+
   var list = await t.list('all');
-  //var spcount = await getTotalListSPCount(t, list)
   var spLimit = await getListSPLimit(t, list)
 
-  // const id = list.id
-  // await t.set('board', 'shared', `stati_story_point_total_value_${list.id}`, spcount);
-  // var spColor = 'green'
-  // if (spcount > spLimit) spColor = 'red'
-  // else if (spcount === spLimit) spColor = 'yellow'
+  var savedTotal = await t.get('board', 'shared', `stati_story_point_total_value_${list.id}`);
+  var spColor = getColorForSP(savedTotal, spLimit)
 
-  var trueSpCount = await t.get('board', 'shared', `stati_story_point_total_value_${list.id}`);
-  var spColor = 'green'
-  if (trueSpCount > spLimit) spColor = 'red'
-  else if (trueSpCount === spLimit) spColor = 'yellow'
+  var savedDev = await t.get('board', 'shared', `stati_story_point_total_value_dev_${list.id}`);
+  var devColor = getColorForSP(savedDev, spLimit)
+
+  var savedEvo = await t.get('board', 'shared', `stati_story_point_total_value_evo_${list.id}`);
+  var evoColor = getColorForSP(savedEvo, spLimit)
+
+  var res = [];
+  if (spLimit > 0) res.push({
+    title: 'Limite',
+    text: `Limite : ${spLimit}`,
+    icon: ICON,
+    color: 'yellow'
+  });
+  if (savedTotal > 0) res.push({
+    title: 'Total Story Points',
+    text: `Total : ${savedTotal}`,
+    icon: ICON,
+    color: spColor,
+  });
+  if (savedDev > 0) res.push({
+    title: 'Total Story Points - DEV',
+    text: `Total - DEV : ${savedDev}`,
+    icon: ICON,
+    color: devColor,
+  });
+  if (savedEvo > 0) res.push({
+    title: 'Total Story Points - Évolution',
+    text: `Total - Évolution: ${savedEvo}`,
+    icon: ICON,
+    color: evoColor,
+  });
+  return res;
+}
+
+var updateTotals = async function (t) {
+  var list = await t.list('all');
+
+  var spcount = await getTotalListSPCount(t, list);
+
+  var savedTotalSP = await t.get('board', 'shared', `stati_story_point_total_value_${list.id}`);
+  var savedDevSP = await t.get('board', 'shared', `stati_story_point_total_value_dev_${list.id}`);
+  var savedEvoSP = await t.get('board', 'shared', `stati_story_point_total_value_evo_${list.id}`);
+
+  var savedTotal = parseInt(savedTotalSP)
+  var savedDev = parseInt(savedDevSP)
+  var savedEvo = parseInt(savedEvoSP)
+
+  if (savedTotal !== spcount.total) await t.set('board', 'shared', `stati_story_point_total_value_${list.id}`, spcount.total);
+  if (savedDev !== spcount.dev) await t.set('board', 'shared', `stati_story_point_total_value_dev_${list.id}`, spcount.dev);
+  if (savedEvo !== spcount.evo) await t.set('board', 'shared', `stati_story_point_total_value_evo_${list.id}`, spcount.evo);
+}
+var getNormalBadges = async function (t, opts) {
+
+  await updateTotals(t);
+
+  const sp = await t.get('board', 'shared', `stati_story_point_value_${id}`);
+  var spText = sp;
+  var spColor = 'green';
+  if (!sp || sp < 1) {
+    spText = 'À évaluer';
+    spColor = 'orange';
+  }
+
+  const cardType = await t.get('board', 'shared', `stati_story_point_card_type_${id}`);
+  var typeText = 'Dev';
+  var typeColor = 'green';
+  if (cardType === 'evo') {
+    typeText = 'Évolution';
+    typeColor = 'blue';
+  }
+
   return [
     {
-      title: 'Total Story Points',
-      text: `Total : ${trueSpCount}`,
+      title: 'StatiStoryPoints',
+      spText: spText,
       icon: ICON,
-      color: spColor,
+      spColor: spColor
     },
     {
-      title: 'Limite',
-      text: `Limite : ${spLimit}`,
+      title: 'Type',
+      spText: typeText,
       icon: ICON,
-      color: 'yellow'
+      spColor: typeColor
     }
-  ];
-
-
-
+  ]
 }
 
 
@@ -264,27 +341,8 @@ var getBadges = async function (t, opts) {
     return await getTotalListSPCountBadges(t, opts)
   }
   else {
-    var list = await t.list('all');
-    //const id = list.id
-    console.log('choosing 1 card');
-
-    var spcount = await getTotalListSPCount(t, list);
-    var trueSpCount = await t.get('board', 'shared', `stati_story_point_total_value_${list.id}`);
-    valInt = parseInt(trueSpCount)
-    if (valInt !== spcount) await t.set('board', 'shared', `stati_story_point_total_value_${list.id}`, spcount);
-
-    //await t.set('board', 'shared', `stati_story_point_total_value_${list.id}`, '334');
-    const sp = await t.get('board', 'shared', `stati_story_point_value_${id}`);
-    console.log('the card id and sp');
-    if (!sp || sp < 1) return []
-    return [
-      {
-        title: 'StatiStoryPoints',
-        text: sp,
-        icon: ICON,
-        color: 'green'
-      }
-    ]
+    console.log('choosing normal');
+    return await getNormalBadges(t, opts)
   }
 
 
@@ -351,7 +409,7 @@ var statStoryPointsTotalButtonCallback = async function (t, opts) {
   console.log(opts);
   await t.attach({
     name: 'Recap image', // optional
-    url: `https://fakeimg.pl/300x100/30bcd1/ffffff?text=${spcount}&font=bebas&font_size=80` // required
+    url: `https://fakeimg.pl/300x100/30bcd1/ffffff?text=${spcount.total}&font=bebas&font_size=80` // required
   });
 }
 //==================================================================================================================
