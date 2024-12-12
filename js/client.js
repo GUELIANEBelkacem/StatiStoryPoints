@@ -74,8 +74,8 @@ Or want all in scope data at once?
 
 t.getAll();
 
-*/ 
- 
+*/
+
 var ICON = './images/ic_story_point.png';
 
 
@@ -229,8 +229,8 @@ var getTotalListSPCountBadges = async function (t, opts) {
 
   var trueSpCount = await t.get('board', 'shared', `stati_story_point_total_value_${list.id}`);
   var spColor = 'green'
-  if (trueSpCount  > spLimit) spColor = 'red'
-  else if (trueSpCount  === spLimit) spColor = 'yellow' 
+  if (trueSpCount > spLimit) spColor = 'red'
+  else if (trueSpCount === spLimit) spColor = 'yellow'
   return [
     {
       title: 'Total Story Points',
@@ -240,7 +240,7 @@ var getTotalListSPCountBadges = async function (t, opts) {
     },
     {
       title: 'Limite',
-      text: `Limite : ${spLimit}`, 
+      text: `Limite : ${spLimit}`,
       icon: ICON,
       color: 'yellow'
     }
@@ -271,7 +271,7 @@ var getBadges = async function (t, opts) {
     var spcount = await getTotalListSPCount(t, list);
     var trueSpCount = await t.get('board', 'shared', `stati_story_point_total_value_${list.id}`);
     valInt = parseInt(trueSpCount)
-    if(valInt !== spcount) await t.set('board', 'shared', `stati_story_point_total_value_${list.id}`, spcount);
+    if (valInt !== spcount) await t.set('board', 'shared', `stati_story_point_total_value_${list.id}`, spcount);
 
     //await t.set('board', 'shared', `stati_story_point_total_value_${list.id}`, '334');
     const sp = await t.get('board', 'shared', `stati_story_point_value_${id}`);
@@ -481,6 +481,9 @@ TrelloPowerUp.initialize({
   },
   'list-actions': function (t) {
     return getListActions(t)
+  },
+  'card-back-section': function (t, options) {
+    return getCardBackSection(t, options)
   },
   // 'card-from-url': function (t, options) {
   //   // options.url has the url in question
