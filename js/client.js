@@ -74,8 +74,8 @@ Or want all in scope data at once?
 
 t.getAll();
 
-*/
-
+*/ 
+ 
 var ICON = './images/ic_story_point.png';
 
 
@@ -218,24 +218,29 @@ var getListSPLimit = async function (t, list) {
 
 var getTotalListSPCountBadges = async function (t, opts) {
   var list = await t.list('all');
-  var spcount = await getTotalListSPCount(t, list)
+  //var spcount = await getTotalListSPCount(t, list)
   var spLimit = await getListSPLimit(t, list)
 
+  // const id = list.id
+  // await t.set('board', 'shared', `stati_story_point_total_value_${list.id}`, spcount);
+  // var spColor = 'green'
+  // if (spcount > spLimit) spColor = 'red'
+  // else if (spcount === spLimit) spColor = 'yellow'
 
+  var trueSpCount = await t.get('board', 'shared', `stati_story_point_total_value_${list.id}`);
   var spColor = 'green'
-  if (spcount > spLimit) spColor = 'red'
-  else if (spcount === spLimit) spColor = 'yellow'
-
+  if (trueSpCount  > spLimit) spColor = 'red'
+  else if (trueSpCount  === spLimit) spColor = 'yellow' 
   return [
     {
       title: 'Total Story Points',
-      text: `Total : ${spcount}`,
+      text: `Total : ${trueSpCount}`,
       icon: ICON,
-      color: spColor
+      color: spColor,
     },
     {
       title: 'Limite',
-      text: `Limite : ${spLimit}`,
+      text: `Limite : ${spLimit}`, 
       icon: ICON,
       color: 'yellow'
     }
@@ -251,13 +256,26 @@ var getBadges = async function (t, opts) {
   const card = await t.card('id', 'name')
   const id = card.id
 
+  console.log('making a choice');
 
 
   if (card.name.indexOf('#') === 0) {
+    console.log('choosing total');
     return await getTotalListSPCountBadges(t, opts)
   }
   else {
+    var list = await t.list('all');
+    //const id = list.id
+    console.log('choosing 1 card');
+
+    var spcount = await getTotalListSPCount(t, list);
+    var trueSpCount = await t.get('board', 'shared', `stati_story_point_total_value_${list.id}`);
+    valInt = parseInt(trueSpCount)
+    if(valInt !== spcount) await t.set('board', 'shared', `stati_story_point_total_value_${list.id}`, spcount);
+
+    //await t.set('board', 'shared', `stati_story_point_total_value_${list.id}`, '334');
     const sp = await t.get('board', 'shared', `stati_story_point_value_${id}`);
+    console.log('the card id and sp');
     if (!sp || sp < 1) return []
     return [
       {
@@ -297,7 +315,7 @@ var getCardButtons = async function (t, opts) {
   }
 }
 var statiStoryPointsButtonCallback = function (t, opts) {
-  var items = ['1', '2', '3', '5', '8', '13', '21', '34', '55'].map(function (fibItem) {
+  var items = ['0', '1', '2', '3', '5', '8', '13', '21', '34', '55', '89'].map(function (fibItem) {
 
     return {
       text: fibItem,
