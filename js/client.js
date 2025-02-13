@@ -274,7 +274,7 @@ var getTotalListSPCountBadges = async function (t, opts) {
   // var allstuff = await t.getAll();
   // console.log('all the data')
   // console.log(allstuff)
-  
+
   var list = await t.list('all');
   var spLimit = await getListSPLimit(t, list)
 
@@ -361,6 +361,9 @@ var getNormalBadges = async function (t, opts) {
   const card = await t.card('id', 'name')
   const id = card.id
 
+  const logCard = await t.card('all');
+  console.log('card');
+  console.log(logCard);
   // //transition
   // var boardVal = await t.get('board', 'shared', `stati_story_point_value_${id}`)
   // if(boardVal)
@@ -434,7 +437,7 @@ var getBadges = async function (t, opts) {
 //==================================================================================================================
 var getCardButtons = async function (t, opts) {
 
-  
+
 
   const card = await t.card('name')
 
@@ -522,98 +525,9 @@ var listLimitCallback = async function (t) {
 
 }
 
-// We need to call initialize to get all of our capability handles set up and registered with Trello
+
 TrelloPowerUp.initialize({
-  // NOTE about asynchronous responses
-  // If you need to make an asynchronous request or action before you can reply to Trello
-  // you can return a Promise (bluebird promises are included at TrelloPowerUp.Promise)
-  // The Promise should resolve to the object type that is expected to be returned
-  // 'attachment-sections': function (t, options) {
-  //   // options.entries is a list of the attachments for this card
-  //   // you can look through them and 'claim' any that you want to
-  //   // include in your section.
 
-  //   // console.log('attachment-sections');
-  //   // console.log(options);
-  //   // // we will just claim urls for Yellowstone
-  //   var claimed = options.entries.filter(function (attachment) {
-  //     return attachment.url.indexOf('https://fakeimg.pl/') === 0;
-  //   });
-
-  //   // // you can have more than one attachment section on a card
-  //   // // you can group items together into one section, have a section
-  //   // // per attachment, or anything in between.
-  //   // if (claimed && claimed.length > 0) {
-  //   //   // if the title for your section requires a network call or other
-  //   //   // potentially length operation you can provide a function for the title
-  //   //   // that returns the section title. If you do so, provide a unique id for
-  //   //   // your section
-  //   //   return [{
-  //   //     id: 'testtest', // optional if you aren't using a function for the title
-  //   //     claimed: claimed,
-  //   //     icon: ICON,
-  //   //     title: 'StatiStoryPoints Section',
-  //   //     content: {
-  //   //       type: 'iframe',
-  //   //       url: t.signUrl('./section.html', { arg: 'you can pass your section args here' }),
-  //   //       height: 230
-  //   //     }
-  //   //   }];
-  //   // } else {
-  //   //   return [];
-  //   // }
-  //   return [
-  //     {
-  //       id: 'testtest', // optional if you aren't using a function for the title
-  //       claimed: options.entries,
-  //       icon: ICON,
-  //       title: 'StatiStoryPoints Section',
-  //       content: {
-  //         type: 'image',
-  //         url: 'https://fakeimg.pl/600x400/a65858/543939?text=Hello',
-  //         height: 230
-  //       }
-  //     }
-  //   ];
-  // },
-  // 'attachment-thumbnail': function (t, options) {
-  //   // options.url has the url of the attachment for us
-  //   // return an object (or a Promise that resolves to it) with some or all of these properties:
-  //   // url, title, image, modified (Date), created (Date), createdBy, modifiedBy
-
-  //   // You should use this if you have useful information about an attached URL but it
-  //   // doesn't warrant pulling it out into a section via the attachment-sections capability
-  //   // for example if you just want to show a preview image and give it a better name
-  //   // then attachment-thumbnail is the best option
-  //   return {
-  //     url: options.url,
-  //     title: '👉 ' + options.url + ' 👈',
-  //     image: {
-  //       url: GLITCH_ICON,
-  //       logo: true // false if you are using a thumbnail of the content
-  //     },
-  //   };
-
-  //   // if we don't actually have any valuable information about the url
-  //   // we can let Trello know like so:
-  //   // throw t.NotHandled();
-  // },
-  // 'board-buttons': function (t, options) {
-  //   return [{
-  //     // we can either provide a button that has a callback function
-  //     // that callback function should probably open a popup, overlay, or boardBar
-  //     icon: ICON,
-  //     text: 'StatiStoryPoints',
-  //     callback: boardButtonCallback
-  //   }, {
-  //     // or we can also have a button that is just a simple url
-  //     // clicking it will open a new tab at the provided url
-  //     icon: ICON,
-  //     text: 'URL',
-  //     url: 'https://trello.com/inspiration',
-  //     target: 'Inspiring Boards' // optional target for above url
-  //   }];
-  // },
   'card-badges': function (t, options) {
     return getBadges(t, options)
   },
@@ -629,66 +543,7 @@ TrelloPowerUp.initialize({
   'card-back-section': function (t, options) {
     return getCardBackSection(t, options)
   },
-  // 'card-from-url': function (t, options) {
-  //   // options.url has the url in question
-  //   // if we know cool things about that url we can give Trello a name and desc
-  //   // to use when creating a card. Trello will also automatically add that url
-  //   // as an attachment to the created card
-  //   // As always you can return a Promise that resolves to the card details
-
-  //   return new Promise(function (resolve) {
-  //     resolve({
-  //       name: '💻 ' + options.url + ' 🤔',
-  //       desc: 'This Power-Up knows cool things about the attached url'
-  //     });
-  //   });
-
-  //   // if we don't actually have any valuable information about the url
-  //   // we can let Trello know like so:
-  //   // throw t.NotHandled();
-  // },
-  // 'format-url': function (t, options) {
-  //   // options.url has the url that we are being asked to format
-  //   // in our response we can include an icon as well as the replacement text
-
-  //   return {
-  //     icon: ICON, // don't use a colored icon here
-  //     text: '👉 ' + options.url + ' 👈'
-  //   };
-
-  //   // if we don't actually have any valuable information about the url
-  //   // we can let Trello know like so:
-  //   // throw t.NotHandled();
-  // },
-  // 'show-settings': function (t, options) {
-  //   // when a user clicks the gear icon by your Power-Up in the Power-Ups menu
-  //   // what should Trello show. We highly recommend the popup in this case as
-  //   // it is the least disruptive, and fits in well with the rest of Trello's UX
-  //   return t.popup({
-  //     title: 'Settings',
-  //     url: './settings.html',
-  //     height: 184 // we can always resize later, but if we know the size in advance, its good to tell Trello
-  //   });
-  // },
-
-  /*        
-      
-      🔑 Authorization Capabiltiies 🗝
-      
-      The following two capabilities should be used together to determine:
-      1. whether a user is appropriately authorized
-      2. what to do when a user isn't completely authorized
-      
-  */
   'authorization-status': function (t, options) {
-    // Return a promise that resolves to an object with a boolean property 'authorized' of true or false
-    // The boolean value determines whether your Power-Up considers the user to be authorized or not.
-
-    // When the value is false, Trello will show the user an "Authorize Account" options when
-    // they click on the Power-Up's gear icon in the settings. The 'show-authorization' capability
-    // below determines what should happen when the user clicks "Authorize Account"
-
-    // For instance, if your Power-Up requires a token to be set for the member you could do the following:
     return t.get('member', 'private', 'token')
       .then(function (token) {
         if (token) {
@@ -696,19 +551,9 @@ TrelloPowerUp.initialize({
         }
         return { authorized: false };
       });
-    // You can also return the object synchronously if you know the answer synchronously.
   },
   'show-authorization': function (t, options) {
-    // Returns what to do when a user clicks the 'Authorize Account' link from the Power-Up gear icon
-    // which shows when 'authorization-status' returns { authorized: false }.
-
-    // If we want to ask the user to authorize our Power-Up to make full use of the Trello API
-    // you'll need to add your API from trello.com/app-key below:
     let trelloAPIKey = '288492918a8be959e6b9aadb9bd83f3f';
-    // This key will be used to generate a token that you can pass along with the API key to Trello's
-    // RESTful API. Using the key/token pair, you can make requests on behalf of the authorized user.
-
-    // In this case we'll open a popup to kick off the authorization flow.
     if (trelloAPIKey) {
       return t.popup({
         title: 'My Auth Popup',
