@@ -271,9 +271,9 @@ var getColorForSP_Zero = function (sp) {
 
 var getTotalListSPCountBadges = async function (t, opts) {
 
-  // var allstuff = await t.getAll();
-  // console.log('all the data')
-  // console.log(allstuff)
+  var allstuff = await t.getAll();
+  console.log('all the data')
+  console.log(allstuff)
 
   var list = await t.list('all');
   var spLimit = await getListSPLimit(t, list)
@@ -361,9 +361,9 @@ var getNormalBadges = async function (t, opts) {
   const card = await t.card('id', 'name')
   const id = card.id
 
-  const logCard = await t.card('all');
-  console.log('card');
-  console.log(logCard);
+  // const logCard = await t.card('all');
+  // console.log('card');
+  // console.log(logCard);
   // //transition
   // var boardVal = await t.get('board', 'shared', `stati_story_point_value_${id}`)
   // if(boardVal)
