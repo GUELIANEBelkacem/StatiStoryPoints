@@ -303,7 +303,7 @@ var getTotalListSPCountBadges = async function (t, opts) {
   var list = await t.list('all');
   var spLimit = await getListSPLimit(t, list)
 
-  console.log(`getting total for ${list.name}`)
+  //console.log(`getting total for ${list.name}`)
 
   var limitTotal = spLimit.total
   var limitEvo = spLimit.evo
@@ -379,8 +379,8 @@ var updateTotals = async function (t, listID) {
 
   var list = getListFromListOfLists(lists, listID)
   if (!list) return
-  console.log('------------------------------------')
-  console.log(`Updating total for ${list.name}`)
+  //console.log('------------------------------------')
+  //console.log(`Updating total for ${list.name}`)
   var spcount = await getTotalListSPCount(t, list);
   var totalsCard = getTheTotalsCardFromList(list)
   if (!totalsCard) return
@@ -392,7 +392,7 @@ var updateTotals = async function (t, listID) {
   var savedEvoSP = await t.get(id, 'shared', `stati_story_point_total_value_evo_${list.id}`);
   var savedBlank = await t.get(id, 'shared', `stati_story_point_total_value_blank_${list.id}`);
 
-  console.log(`Saved Total ${savedTotalSP} Calculated Total ${spcount.total}`)
+  //console.log(`Saved Total ${savedTotalSP} Calculated Total ${spcount.total}`)
 
 
   if (savedTotalSP !== spcount.total) await t.set(id, 'shared', `stati_story_point_total_value_${list.id}`, spcount.total);
@@ -400,7 +400,7 @@ var updateTotals = async function (t, listID) {
   if (savedEvoSP !== spcount.evo) await t.set(id, 'shared', `stati_story_point_total_value_evo_${list.id}`, spcount.evo);
   if (savedBlank !== spcount.blank) await t.set(id, 'shared', `stati_story_point_total_value_blank_${list.id}`, spcount.blank);
 
-  console.log('------------------------------------')
+  //console.log('------------------------------------')
 }
 
 const getListFromListOfLists = function (lists, listID) {
