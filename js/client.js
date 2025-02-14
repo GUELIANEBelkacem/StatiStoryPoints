@@ -372,8 +372,13 @@ var getTheTotalsCardFromList = function (list) {
   return null
 }
 
-var updateTotals = async function (t) {
-  var list = await t.list('all');
+var updateTotals = async function (t, listID) {
+
+  const lists = await t.lists('all');
+
+
+  var list = getListFromListOfLists(lists, listID)
+  if (!list) return
   console.log('------------------------------------')
   console.log(`Updating total for ${list.name}`)
   var spcount = await getTotalListSPCount(t, list);
@@ -397,9 +402,20 @@ var updateTotals = async function (t) {
 
   console.log('------------------------------------')
 }
+
+const getListFromListOfLists = function (lists, listID) {
+  for (const list of lists) {
+    if (list.id === listID) return list
+
+  }
+  return null
+}
+
 var getNormalBadges = async function (t, opts) {
 
-  await updateTotals(t);
+  const list = await t.list('all');
+
+  await updateTotals(t, list.id);
 
   const card = await t.card('id', 'name')
   const id = card.id
