@@ -275,6 +275,19 @@ var getTotalListSPCountBadges = async function (t, opts) {
   console.log('all the data')
   console.log(allstuff)
 
+  // if(!allstuff) return []
+  // for (const key in allstuff.board.shared) {
+
+  // }
+  //delete all the shared keys from board that start with stati_story_point_total_value_
+  //transition
+  for (const key in allstuff.board.shared) {
+    if (key.indexOf('stati_story_point_total_value_') === 0) {
+      console.log(`removing key ${key}`);
+      await t.remove('board', 'shared', key)
+    }
+  }
+  //fin transition
   var card = await t.card('id', 'name')
   var id = card.id
 
