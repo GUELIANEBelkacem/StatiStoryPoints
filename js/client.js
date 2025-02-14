@@ -287,7 +287,7 @@ var getTotalListSPCountBadges = async function (t, opts) {
   console.log(allstuff.board)
 
   console.log('allstuff.board.shared')
-  console.log(llstuff.board.shared)
+  console.log(allstuff.board.shared)
   for (const key in Object.keys(allstuff.board.shared)) {
     console.log(`key ${key}`)
     if (key.indexOf('stati_story_point_total_value_') === 0) {
