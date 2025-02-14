@@ -339,6 +339,8 @@ var getTotalListSPCountBadges = async function (t, opts) {
 
 var updateTotals = async function (t) {
   var list = await t.list('all');
+  console.log('the list in update totals');
+  console.log(list);
 
   var spcount = await getTotalListSPCount(t, list);
 
