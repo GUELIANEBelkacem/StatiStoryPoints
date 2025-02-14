@@ -420,8 +420,8 @@ const runUpdateSerquence = async function (t) {
   const id = card.id
 
   const lastListId = await t.get(id, 'shared', `stati_story_point_last_list_id`);
-  if (lastListId && lastListId !== currentListID) {
-    await updateTotals(t, lastListId);
+  if (lastListId !== currentListID) {
+    if (lastListId) await updateTotals(t, lastListId);
     await t.set(id, 'shared', `stati_story_point_last_list_id`, currentListID);
   }
 }
