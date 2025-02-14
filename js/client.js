@@ -284,6 +284,7 @@ var getTotalListSPCountBadges = async function (t, opts) {
   //get all key value pairs of an object 
 
   for (const key in Object.keys(allstuff.board.shared)) {
+    console.log(`key ${key}`)
     if (key.indexOf('stati_story_point_total_value_') === 0) {
       console.log(`removing key ${key}`);
       await t.remove('board', 'shared', key)
