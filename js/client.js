@@ -374,8 +374,8 @@ var getTheTotalsCardFromList = function (list) {
 
 var updateTotals = async function (t) {
   var list = await t.list('all');
-
-  console.log(`updating total for ${list.name}`)
+  console.log('------------------------------------')
+  console.log(`Updating total for ${list.name}`)
   var spcount = await getTotalListSPCount(t, list);
   var totalsCard = getTheTotalsCardFromList(list)
   if (!totalsCard) return
@@ -387,11 +387,15 @@ var updateTotals = async function (t) {
   var savedEvoSP = await t.get(id, 'shared', `stati_story_point_total_value_evo_${list.id}`);
   var savedBlank = await t.get(id, 'shared', `stati_story_point_total_value_blank_${list.id}`);
 
+  console.log(`Saved Total ${savedTotalSP} Calculated Total ${spcount.total}`)
+
 
   if (savedTotalSP !== spcount.total) await t.set(id, 'shared', `stati_story_point_total_value_${list.id}`, spcount.total);
   if (savedDevSP !== spcount.dev) await t.set(id, 'shared', `stati_story_point_total_value_dev_${list.id}`, spcount.dev);
   if (savedEvoSP !== spcount.evo) await t.set(id, 'shared', `stati_story_point_total_value_evo_${list.id}`, spcount.evo);
   if (savedBlank !== spcount.blank) await t.set(id, 'shared', `stati_story_point_total_value_blank_${list.id}`, spcount.blank);
+
+  console.log('------------------------------------')
 }
 var getNormalBadges = async function (t, opts) {
 
