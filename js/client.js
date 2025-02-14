@@ -410,12 +410,25 @@ const getListFromListOfLists = function (lists, listID) {
   }
   return null
 }
+const runUpdateSerquence = async function (t) {
+  const list = await t.list('all');
+  const currentListID = list.id
+  await updateTotals(t, currentListID);
 
+
+  const card = await t.card('id', 'name')
+  const id = card.id
+
+  const lastListId = await t.get(id, 'shared', `stati_story_point_last_list_id`);
+  if (lastListId && lastListId !== currentListID) {
+    await updateTotals(t, lastListId);
+    await t.set(id, 'shared', `stati_story_point_last_list_id`, currentListID);
+  }
+}
 var getNormalBadges = async function (t, opts) {
 
-  const list = await t.list('all');
 
-  await updateTotals(t, list.id);
+  await runUpdateSerquence(t);
 
   const card = await t.card('id', 'name')
   const id = card.id
