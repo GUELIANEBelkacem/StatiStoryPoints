@@ -275,6 +275,9 @@ var getTotalListSPCountBadges = async function (t, opts) {
   console.log('all the data')
   console.log(allstuff)
 
+  var card = await t.card('id', 'name')
+  var id = card.id
+
   var list = await t.list('all');
   var spLimit = await getListSPLimit(t, list)
 
@@ -282,16 +285,16 @@ var getTotalListSPCountBadges = async function (t, opts) {
   var limitEvo = spLimit.evo
   var limitDev = limitTotal - limitEvo
 
-  var savedTotal = await t.get('board', 'shared', `stati_story_point_total_value_${list.id}`);
+  var savedTotal = await t.get(id, 'shared', `stati_story_point_total_value_${list.id}`);
   var spColor = getColorForSP(savedTotal, limitTotal)
 
-  var savedDev = await t.get('board', 'shared', `stati_story_point_total_value_dev_${list.id}`);
+  var savedDev = await t.get(id, 'shared', `stati_story_point_total_value_dev_${list.id}`);
   var devColor = getColorForSP(savedDev, limitDev)
 
-  var savedEvo = await t.get('board', 'shared', `stati_story_point_total_value_evo_${list.id}`);
+  var savedEvo = await t.get(id, 'shared', `stati_story_point_total_value_evo_${list.id}`);
   var evoColor = getColorForSP(savedEvo, limitEvo)
 
-  var savedBlank = await t.get('board', 'shared', `stati_story_point_total_value_blank_${list.id}`);
+  var savedBlank = await t.get(id, 'shared', `stati_story_point_total_value_blank_${list.id}`);
   var blankColor = getColorForSP_Zero(savedBlank)
 
   var totalText = `Total : ${savedTotal}`
@@ -337,24 +340,35 @@ var getTotalListSPCountBadges = async function (t, opts) {
   return res;
 }
 
+var getTheTotalsCardFromList = function (list) {
+  var cards = list.cards;
+  for (const card of cards) {
+    if (card.name.indexOf('#') === 0) return card
+  }
+  return null
+}
+
 var updateTotals = async function (t) {
   var list = await t.list('all');
   console.log('the list in update totals');
   console.log(list);
 
   var spcount = await getTotalListSPCount(t, list);
+  var totalsCard = getTheTotalsCardFromList(list)
+  if (!totalsCard) return
+
+  var id = totalsCard.id
+
+  var savedTotalSP = await t.get(id, 'shared', `stati_story_point_total_value_${list.id}`);
+  var savedDevSP = await t.get(id, 'shared', `stati_story_point_total_value_dev_${list.id}`);
+  var savedEvoSP = await t.get(id, 'shared', `stati_story_point_total_value_evo_${list.id}`);
+  var savedBlank = await t.get(id, 'shared', `stati_story_point_total_value_blank_${list.id}`);
 
 
-  var savedTotalSP = await t.get('board', 'shared', `stati_story_point_total_value_${list.id}`);
-  var savedDevSP = await t.get('board', 'shared', `stati_story_point_total_value_dev_${list.id}`);
-  var savedEvoSP = await t.get('board', 'shared', `stati_story_point_total_value_evo_${list.id}`);
-  var savedBlank = await t.get('board', 'shared', `stati_story_point_total_value_blank_${list.id}`);
-
-
-  if (savedTotalSP !== spcount.total) await t.set('board', 'shared', `stati_story_point_total_value_${list.id}`, spcount.total);
-  if (savedDevSP !== spcount.dev) await t.set('board', 'shared', `stati_story_point_total_value_dev_${list.id}`, spcount.dev);
-  if (savedEvoSP !== spcount.evo) await t.set('board', 'shared', `stati_story_point_total_value_evo_${list.id}`, spcount.evo);
-  if (savedBlank !== spcount.blank) await t.set('board', 'shared', `stati_story_point_total_value_blank_${list.id}`, spcount.blank);
+  if (savedTotalSP !== spcount.total) await t.set(id, 'shared', `stati_story_point_total_value_${list.id}`, spcount.total);
+  if (savedDevSP !== spcount.dev) await t.set(id, 'shared', `stati_story_point_total_value_dev_${list.id}`, spcount.dev);
+  if (savedEvoSP !== spcount.evo) await t.set(id, 'shared', `stati_story_point_total_value_evo_${list.id}`, spcount.evo);
+  if (savedBlank !== spcount.blank) await t.set(id, 'shared', `stati_story_point_total_value_blank_${list.id}`, spcount.blank);
 }
 var getNormalBadges = async function (t, opts) {
 
