@@ -271,9 +271,9 @@ var getColorForSP_Zero = function (sp) {
 
 var getTotalListSPCountBadges = async function (t, opts) {
 
-  var allstuff = await t.getAll();
-  console.log('all the data')
-  console.log(allstuff)
+  // var allstuff = await t.getAll();
+  // console.log('all the data')
+  // console.log(allstuff)
 
   // if(!allstuff) return []
   // for (const key in allstuff.board.shared) {
@@ -283,25 +283,27 @@ var getTotalListSPCountBadges = async function (t, opts) {
   //transition
   //get all key value pairs of an object 
 
-  console.log('allstuff.board')
-  console.log(allstuff.board)
+  // console.log('allstuff.board')
+  // console.log(allstuff.board)
 
-  console.log('allstuff.board.shared')
-  console.log(allstuff.board.shared)
-  for (const [key, value] of Object.entries(allstuff.board.shared)) {
-    console.log(key)
-    console.log(value)
-    if (key.indexOf('stati_story_point_total_value_') === 0 || key.indexOf('stati_story_point_value_') === 0) {
-      console.log(`removing key ${key}`);
-      await t.remove('board', 'shared', key)
-    }
-  }
+  // console.log('allstuff.board.shared')
+  // console.log(allstuff.board.shared)
+  // for (const [key, value] of Object.entries(allstuff.board.shared)) {
+  //   console.log(key)
+  //   console.log(value)
+  //   if (key.indexOf('stati_story_point_total_value_') === 0 || key.indexOf('stati_story_point_value_') === 0) {
+  //     console.log(`removing key ${key}`);
+  //     await t.remove('board', 'shared', key)
+  //   }
+  // }
   //fin transition
   var card = await t.card('id', 'name')
   var id = card.id
 
   var list = await t.list('all');
   var spLimit = await getListSPLimit(t, list)
+
+  console.log(`getting total for ${list.name}`)
 
   var limitTotal = spLimit.total
   var limitEvo = spLimit.evo
@@ -372,33 +374,13 @@ var getTheTotalsCardFromList = function (list) {
 
 var updateTotals = async function (t) {
   var list = await t.list('all');
-  console.log('the list in update totals');
-  console.log(list);
 
+  console.log(`updating total for ${list.name}`)
   var spcount = await getTotalListSPCount(t, list);
   var totalsCard = getTheTotalsCardFromList(list)
   if (!totalsCard) return
 
   var id = totalsCard.id
-
-  //transition
-  var savedTotalSPDel = await t.get('board', 'shared', `stati_story_point_total_value_${list.id}`);
-  if (savedTotalSPDel) {
-    await t.remove('board', 'shared', `stati_story_point_total_value_${list.id}`)
-  }
-  var savedDevSPDel = await t.get('board', 'shared', `stati_story_point_total_value_dev_${list.id}`);
-  if (savedDevSPDel) {
-    await t.remove('board', 'shared', `stati_story_point_total_value_dev_${list.id}`)
-  }
-  var savedEvoSPDel = await t.get('board', 'shared', `stati_story_point_total_value_evo_${list.id}`);
-  if (savedEvoSPDel) {
-    await t.remove('board', 'shared', `stati_story_point_total_value_evo_${list.id}`)
-  }
-  var savedBlankDel = await t.get('board', 'shared', `stati_story_point_total_value_blank_${list.id}`);
-  if (savedBlankDel) {
-    await t.remove('board', 'shared', `stati_story_point_total_value_blank_${list.id}`)
-  }
-  //fin transition
 
   var savedTotalSP = await t.get(id, 'shared', `stati_story_point_total_value_${list.id}`);
   var savedDevSP = await t.get(id, 'shared', `stati_story_point_total_value_dev_${list.id}`);
