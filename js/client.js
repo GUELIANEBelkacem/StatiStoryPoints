@@ -359,6 +359,25 @@ var updateTotals = async function (t) {
 
   var id = totalsCard.id
 
+  //transition
+  var savedTotalSPDel = await t.get('board', 'shared', `stati_story_point_total_value_${list.id}`);
+  if (savedTotalSPDel) {
+    await t.remove('board', 'shared', `stati_story_point_total_value_${list.id}`)
+  }
+  var savedDevSPDel = await t.get('board', 'shared', `stati_story_point_total_value_dev_${list.id}`);
+  if (savedDevSPDel) {
+    await t.remove('board', 'shared', `stati_story_point_total_value_dev_${list.id}`)
+  }
+  var savedEvoSPDel = await t.get('board', 'shared', `stati_story_point_total_value_evo_${list.id}`);
+  if (savedEvoSPDel) {
+    await t.remove('board', 'shared', `stati_story_point_total_value_evo_${list.id}`)
+  }
+  var savedBlankDel = await t.get('board', 'shared', `stati_story_point_total_value_blank_${list.id}`);
+  if (savedBlankDel) {
+    await t.remove('board', 'shared', `stati_story_point_total_value_blank_${list.id}`)
+  }
+  //fin transition
+
   var savedTotalSP = await t.get(id, 'shared', `stati_story_point_total_value_${list.id}`);
   var savedDevSP = await t.get(id, 'shared', `stati_story_point_total_value_dev_${list.id}`);
   var savedEvoSP = await t.get(id, 'shared', `stati_story_point_total_value_evo_${list.id}`);
